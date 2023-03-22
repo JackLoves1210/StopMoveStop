@@ -15,6 +15,6 @@ public class Attack : MonoBehaviour
 
     private void DoAttack()
     {
-        SimplePool.Spawn<WeaponCtl>(_wreaponPrefab, tf.position, Quaternion.Euler(new Vector3(0,-90,90))).Oninit();
+        //SimplePool.Spawn<WeaponCtl>(_wreaponPrefab, tf.position, Quaternion.Euler(new Vector3(0,-90,90))).Oninit();
     }
 }

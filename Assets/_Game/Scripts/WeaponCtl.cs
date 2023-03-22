@@ -4,16 +4,26 @@ using UnityEngine;
 
 public class WeaponCtl : GameUnit
 {
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private Rigidbody rb;
-    [SerializeField] private Player _player;
-    private void Start()
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private Character _character;
+    public void Oninit(Character character , Vector3 target)
     {
-        _player = FindObjectOfType<Player>();
+        this._character = character;
+        transform.forward = (target - transform.position).normalized;
     }
-    public void Oninit()
+
+    private void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, _player.GetClosestTarget(), speed * Time.deltaTime);
+        if (Vector3.Distance(transform.position , _character.transform.position) < _character._rangeAttack)
+        {
+            transform.forward =new Vector3(transform.forward.x, 0, transform.forward.z);
+            transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
+        }
+        else
+        {
+            OnDespawn();
+        }
+        
     }
 
     public void OnDespawn()
@@ -23,9 +33,11 @@ public class WeaponCtl : GameUnit
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(Constant.TAG_BOT) || other.CompareTag(Constant.TAG_BLOCK))
+        if (other.CompareTag(Constant.TAG_CHARACTER) || other.CompareTag(Constant.TAG_BLOCK))
         {
             OnDespawn();
+            other.GetComponent<Character>().OnDeath();
+            _character._listTarget.Remove(other.gameObject);   
         }
     }
 }

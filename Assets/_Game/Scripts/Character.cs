@@ -2,19 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : GameUnit
 {
+    //public const float TIME_DELAY_THROW = 0.4f;
+
+    //public const float ATT_RANGE = 5f;
+
+    //public const float MAX_SIZE = 4f;
+    //public const float MIN_SIZE = 1f;
+
+    //protected float size = 1;
 
     [SerializeField] public Animator _animator;
+    //[SerializeField] public Character _target;
+    //[SerializeField] public List<Character> _listTarget = new List<Character>();
+
     [SerializeField] public GameObject _target;
     [SerializeField] public List<GameObject> _listTarget = new List<GameObject>();
-    [SerializeField] public Transform tf;
     [SerializeField] public WeaponType _WeaponType;
     [SerializeField] public Transform _weaponTransform;
+    [SerializeField] private WeaponCtl _wreaponPrefab;
+    public float _rangeAttack = 7f;
     private GameObject modelWeapon;
     string _currentAnim;
-
-
+    public bool _isDead;
+  //  private Vector3 targetPoint;
+    public virtual void OnInit()
+    {
+        _isDead = false;
+    }
     public void OnEnableWeapon()
     {
         if (modelWeapon!= null)
@@ -27,21 +43,78 @@ public class Character : MonoBehaviour
             modelWeapon.transform.SetParent(_weaponTransform,false);
         }
     }
+
+    public void SetActiveWeapon()
+    {
+        modelWeapon.SetActive(false);
+        Invoke(nameof(IsHaveWeapon), 1f);
+    }
+
+    public void IsHaveWeapon()
+    {
+        modelWeapon.SetActive(true);
+    }
+    //public void OnAttack()
+    //{
+    //    Debug.Log("_time");
+    //    float _timeRate = 1.1f;
+    //    float _time = 0f;
+    //    if (_time >= _timeRate)
+    //    {
+    //        Attack();
+    //        _time = 0f;
+    //    }
+    //    _time += Time.deltaTime;
+    //}
+
+    //public virtual void OnAttack()
+    //{
+    //    _target = GetClosestTarget();
+
+    //    if (_isCanAttack && _target != null && !_target.IsDead/* && currentSkin.Weapon.IsCanAttack*/)
+    //    {
+    //        targetPoint = _target.transform.position;
+    //        transform.LookAt(targetPoint + (transform.position.y - targetPoint.y) * Vector3.up);
+    //        ChangAnim(Constant.ANIM_ATTACK);
+    //    }
+
+    //}
+
+    //public Character GetTargetInRange()
+    //{
+    //    Character target = null;
+    //    float distance = float.PositiveInfinity;
+
+    //    for (int i = 0; i < _listTarget.Count; i++)
+    //    {
+    //        if (_listTarget[i] != null && _listTarget[i] != this && !_listTarget[i].IsDead && Vector3.Distance(transform.position, _listTarget[i].transform.position) <= ATT_RANGE * size + _listTarget[i].size)
+    //        {
+    //            float dis = Vector3.Distance(transform.position, _listTarget[i].transform.position);
+
+    //            if (dis < distance)
+    //            {
+    //                distance = dis;
+    //                target = _listTarget[i];
+    //            }
+    //        }
+    //    }
+
+    //    return target;
+    //}
     public Vector3 GetDirectionTaget()
     {
         Vector3 closestTarget = _listTarget[Constant.FRIST_INDEX].transform.position;
-        float closestDistance = Vector3.Distance(tf.position , closestTarget);
+        float closestDistance = Vector3.Distance(TF.position , closestTarget);
         for (int i = 0; i < _listTarget.Count; i++)
         {
-            float distance = Vector3.Distance(tf.position, _listTarget[i].transform.position);
+            float distance = Vector3.Distance(TF.position, _listTarget[i].transform.position);
             if (distance < closestDistance)
             {
                 closestTarget = _listTarget[i].transform.position;
                 closestDistance = distance;
             }
         }
-
-        Vector3 directionToTarget = closestTarget - tf.position;
+        Vector3 directionToTarget = closestTarget - TF.position;
         Vector3 normalizedDirection = directionToTarget.normalized;
         return normalizedDirection;
     }
@@ -49,10 +122,10 @@ public class Character : MonoBehaviour
     public Vector3 GetClosestTarget()
     {
         Vector3 closestTarget = _listTarget[Constant.FRIST_INDEX].transform.position;
-        float closestDistance = Vector3.Distance(tf.position, closestTarget);
+        float closestDistance = Vector3.Distance(TF.position, closestTarget);
         for (int i = 0; i < _listTarget.Count; i++)
         {
-            float distance = Vector3.Distance(tf.position, _listTarget[i].transform.position);
+            float distance = Vector3.Distance(TF.position, _listTarget[i].transform.position);
             if (distance < closestDistance)
             {
                 closestTarget = _listTarget[i].transform.position;
@@ -61,7 +134,14 @@ public class Character : MonoBehaviour
         }
         return closestTarget;
     }
-    public void ChangAnim(string animName)
+
+    public virtual void Attack()
+    {
+        LookEnemy();
+        ChangeAnim(Constant.ANIM_ATTACK);
+        SetActiveWeapon();
+    }
+    public void ChangeAnim(string animName)
     {
         if (_currentAnim != animName)
         {
@@ -71,9 +151,28 @@ public class Character : MonoBehaviour
         }
     }
 
+    public void LookEnemy() 
+    {
+        if (_listTarget.Count > 0)
+        {
+            Vector3 direction = GetDirectionTaget();
+            direction.y = 0f;
+            transform.rotation = Quaternion.LookRotation(direction);
+        }
+    }
+
+    public  void SpawnWeapon()
+    {
+        if (_listTarget.Count > 0)
+        {
+            Vector3 target = GetClosestTarget();
+            SimplePool.Spawn<WeaponCtl>(_wreaponPrefab, _weaponTransform.position, Quaternion.identity).Oninit(this, target);
+        }
+    }
+
     public void ResetAnim()
     {
-        ChangAnim("");
+        ChangeAnim("");
     }
     public virtual void ChangeWeapon()
     {
@@ -95,19 +194,17 @@ public class Character : MonoBehaviour
 
     }
 
-    public virtual void Attack()
-    {
-        ChangAnim(Constant.ANIM_ATTACK);
-    }
 
     public virtual void Range()
     {
 
     }
 
-    public virtual void Death()
+    public void OnDeath()
     {
-        ChangAnim(Constant.ANIM_DEATH);
-       // ResetAnim();
+        //ChangeAnim(Constant.ANIM_DEATH);
+        
+        _isDead = true;
     }
+    
 }

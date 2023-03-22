@@ -11,13 +11,14 @@ public class RandomPositionBot : MonoBehaviour
     void Start()
     {
         RandomPos();
+        tfPlayer = FindObjectOfType<Player>().transform;
     }
 
     void RandomPos()
     {
         float randX = Random.Range(-limit, limit);
         float randZ = Random.Range(-limit, limit);
-        tfSelf.position = new Vector3(randX, 0, randZ);
+        tfSelf.position = new Vector3(randX,transform.position.y, randZ);
         while (Vector3.Distance(tfPlayer.position, tfSelf.position) < 5f)
         {
             randX = Random.Range(-limit, limit);
