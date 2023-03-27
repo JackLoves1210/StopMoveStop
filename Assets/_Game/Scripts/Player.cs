@@ -7,9 +7,11 @@ public class Player : Character
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _rotateSpeed;
-    [SerializeField] private CheckCharacter _checkCharacter;
+    
+    
+   // [SerializeField] private CheckCharacter _checkCharacter;
    // [SerializeField] private GameObject _wpeanponPrefab;
-    //[SerializeField] private WeaponCtl _wreaponPrefab;
+   //[SerializeField] private WeaponCtl _wreaponPrefab;
     public bool _isMove;
     public bool _isCanAttack;
 
@@ -20,11 +22,14 @@ public class Player : Character
     void Start()
     {
         OnEnableWeapon();
+        
+
     }
     private WeaponCtl _obj;
 
     private void Update()
     {
+        
         _time += Time.deltaTime;
     
         if (Input.GetMouseButtonUp(0))
@@ -36,7 +41,7 @@ public class Player : Character
 
             if (_time >= _timeRate)
             {
-                Attack();
+                OnAttack();
                 _time = 0f;
             }
 
@@ -65,13 +70,27 @@ public class Player : Character
         }
     }
 
-
-    public override void Attack()
+    public override void OnInit()
     {
-        base.Attack();
+        base.OnInit();
+    }
+    public override void OnAttack()
+    {
+        base.OnAttack();
         StartCoroutine(DoSpawnWeapon());
     }
 
+    public override void AddTarget(Character character)
+    {
+        base.AddTarget(character);
+        character.SetMask(true);
+    }
+
+    public override void RemoveTarget(Character character)
+    {
+        base.RemoveTarget(character);
+        character.SetMask(false);
+    }
     IEnumerator DoSpawnWeapon()
     {
 
@@ -87,8 +106,18 @@ public class Player : Character
                 goto Lable;
             }
         }
-        SpawnWeapon();
+        this.SpawnWeapon();
         Lable:
         yield return null;
+    }
+
+    public override void SpawnWeapon()
+    {
+        base.SpawnWeapon();
+    }
+    public override void OnDeath()
+    {
+        base.OnDeath();
+       LevelManager._instance.RemoveTarget(this);
     }
 }

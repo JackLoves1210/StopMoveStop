@@ -22,7 +22,7 @@ public class PatrolState : IState<Bot>
             t.ChangeState(new AttackState());
             time = 0f;
         }
-        if (t._isDead)
+        if (t.IsDead)
         {
             t.ChangeState(new DeathState());
         }

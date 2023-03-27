@@ -10,8 +10,11 @@ public class CheckCharacter : MonoBehaviour
         
         if (other.CompareTag(Constant.TAG_CHARACTER))
         {
-            Character._target = other.gameObject;
-            Character._listTarget.Add(Character._target);
+            Character _target = other.GetComponent<Character>();
+            if (!_target.IsDead)
+            {
+                Character.AddTarget(_target);
+            }
             
         }
     }
@@ -19,7 +22,8 @@ public class CheckCharacter : MonoBehaviour
     {
         if (other.CompareTag(Constant.TAG_CHARACTER))
         {
-            Character._listTarget.Remove(other.gameObject);
+            Character _target = other.GetComponent<Character>();
+            Character.RemoveTarget(_target);
         }
     }
 }

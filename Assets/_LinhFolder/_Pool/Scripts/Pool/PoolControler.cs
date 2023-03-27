@@ -196,6 +196,7 @@ public enum PoolType
     ACC_Shield,
 
     TargetIndicator,
+    BotName,
 }
 
 

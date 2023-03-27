@@ -6,23 +6,39 @@ public class WeaponCtl : GameUnit
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Character _character;
+    [SerializeField] Vector3 currentPostion;
+    bool hasUpdatedPosition = false;
+    bool OnMove;
     public void Oninit(Character character , Vector3 target)
     {
         this._character = character;
-        transform.forward = (target - transform.position).normalized;
+        TF.forward = (target - TF.position).normalized;
     }
 
+    private void Start()
+    {
+        
+    }
     private void Update()
     {
-        if (Vector3.Distance(transform.position , _character.transform.position) < _character._rangeAttack)
+
+        if (!hasUpdatedPosition)
+        {
+            currentPostion = _character.transform.position;
+            hasUpdatedPosition = true;
+        }
+
+        if (Vector3.Distance(transform.position , currentPostion) < _character._rangeAttack)
         {
             transform.forward =new Vector3(transform.forward.x, 0, transform.forward.z);
             transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
         }
         else
         {
+            hasUpdatedPosition = false;
             OnDespawn();
         }
+
         
     }
 
@@ -33,11 +49,12 @@ public class WeaponCtl : GameUnit
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(Constant.TAG_CHARACTER) || other.CompareTag(Constant.TAG_BLOCK))
+        if (other.CompareTag(Constant.TAG_CHARACTER) && other.GetComponent<Character>() != _character)
         {
             OnDespawn();
-            other.GetComponent<Character>().OnDeath();
-            _character._listTarget.Remove(other.gameObject);   
+            other.GetComponent<Character>().IsDead = true;
+            _character.RemoveTarget(other.GetComponent<Character>());
+            hasUpdatedPosition = false;
         }
     }
 }

@@ -6,30 +6,42 @@ public class Character : GameUnit
 {
     //public const float TIME_DELAY_THROW = 0.4f;
 
-    //public const float ATT_RANGE = 5f;
-
     //public const float MAX_SIZE = 4f;
     //public const float MIN_SIZE = 1f;
 
     //protected float size = 1;
-
+    public const float ATT_RANGE = 5f;
     [SerializeField] public Animator _animator;
     //[SerializeField] public Character _target;
     //[SerializeField] public List<Character> _listTarget = new List<Character>();
+    [SerializeField] GameObject mask;
 
-    [SerializeField] public GameObject _target;
-    [SerializeField] public List<GameObject> _listTarget = new List<GameObject>();
+    //[SerializeField] private TargetIndicator targetIndicator;
+    //[SerializeField] Transform indicatorPoint;
+
+    //[SerializeField] public Character _target;
+    [SerializeField] public BotName botName;
+    [SerializeField] public List<Character> _listTarget = new List<Character>();
+
+
     [SerializeField] public WeaponType _WeaponType;
     [SerializeField] public Transform _weaponTransform;
     [SerializeField] private WeaponCtl _wreaponPrefab;
     public float _rangeAttack = 7f;
     private GameObject modelWeapon;
     string _currentAnim;
-    public bool _isDead;
+    //private Vector3 targetPoint;
+    public bool IsDead { get; set; }
+
   //  private Vector3 targetPoint;
     public virtual void OnInit()
     {
-        _isDead = false;
+        IsDead = false;
+        //targetIndicator = SimplePool.Spawn<TargetIndicator>(PoolType.TargetIndicator);
+        //targetIndicator.SetTarget(indicatorPoint);
+        //targetIndicator.SetName("YOU");
+        botName.GetName();
+        
     }
     public void OnEnableWeapon()
     {
@@ -69,13 +81,13 @@ public class Character : GameUnit
 
     //public virtual void OnAttack()
     //{
-    //    _target = GetClosestTarget();
+    //    this._target = GetTargetInRange();
 
-    //    if (_isCanAttack && _target != null && !_target.IsDead/* && currentSkin.Weapon.IsCanAttack*/)
+    //    if (_target != null && !_target.IsDead/* && currentSkin.Weapon.IsCanAttack*/)
     //    {
     //        targetPoint = _target.transform.position;
     //        transform.LookAt(targetPoint + (transform.position.y - targetPoint.y) * Vector3.up);
-    //        ChangAnim(Constant.ANIM_ATTACK);
+    //        ChangeAnim(Constant.ANIM_ATTACK);
     //    }
 
     //}
@@ -87,7 +99,7 @@ public class Character : GameUnit
 
     //    for (int i = 0; i < _listTarget.Count; i++)
     //    {
-    //        if (_listTarget[i] != null && _listTarget[i] != this && !_listTarget[i].IsDead && Vector3.Distance(transform.position, _listTarget[i].transform.position) <= ATT_RANGE * size + _listTarget[i].size)
+    //        if (_listTarget[i] != null && _listTarget[i] != this && !_listTarget[i].IsDead && Vector3.Distance(transform.position, _listTarget[i].transform.position) <= ATT_RANGE)
     //        {
     //            float dis = Vector3.Distance(transform.position, _listTarget[i].transform.position);
 
@@ -135,11 +147,25 @@ public class Character : GameUnit
         return closestTarget;
     }
 
-    public virtual void Attack()
+    public virtual void OnAttack()
     {
         LookEnemy();
         ChangeAnim(Constant.ANIM_ATTACK);
         SetActiveWeapon();
+    }
+
+    public void SetMask(bool active)
+    {
+        mask.SetActive(active);
+    }
+
+    public virtual void AddTarget(Character character)
+    {
+        this._listTarget.Add(character);
+    }
+    public virtual void RemoveTarget(Character character)
+    {
+        this._listTarget.Remove(character);
     }
     public void ChangeAnim(string animName)
     {
@@ -153,20 +179,21 @@ public class Character : GameUnit
 
     public void LookEnemy() 
     {
+       
         if (_listTarget.Count > 0)
         {
             Vector3 direction = GetDirectionTaget();
             direction.y = 0f;
-            transform.rotation = Quaternion.LookRotation(direction);
+            TF.rotation = Quaternion.LookRotation(direction);
         }
     }
 
-    public  void SpawnWeapon()
+    public virtual void SpawnWeapon()
     {
-        if (_listTarget.Count > 0)
+        if (this._listTarget.Count > 0)
         {
-            Vector3 target = GetClosestTarget();
-            SimplePool.Spawn<WeaponCtl>(_wreaponPrefab, _weaponTransform.position, Quaternion.identity).Oninit(this, target);
+            Vector3 taget = GetClosestTarget();
+            SimplePool.Spawn<WeaponCtl>(_wreaponPrefab, _weaponTransform.position, Quaternion.identity).Oninit(this, taget);
         }
     }
 
@@ -200,11 +227,9 @@ public class Character : GameUnit
 
     }
 
-    public void OnDeath()
+    public virtual void OnDeath()
     {
-        //ChangeAnim(Constant.ANIM_DEATH);
-        
-        _isDead = true;
+        ChangeAnim(Constant.ANIM_DEATH);
     }
     
 }

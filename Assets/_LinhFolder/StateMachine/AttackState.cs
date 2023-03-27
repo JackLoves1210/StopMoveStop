@@ -9,12 +9,11 @@ public class AttackState : IState<Bot>
     public void OnEnter(Bot t)
     {
         t.StartCoroutine(t.DoAttack());
-
     }
 
     public void OnExecute(Bot t)
     {
-        if (t._isDead)
+        if (t.IsDead)
         {
             t.ChangeState(new DeathState());
         }

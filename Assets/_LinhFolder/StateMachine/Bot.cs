@@ -11,11 +11,13 @@ public class Bot : Character
         public Transform centrePoint ; //centre of the area the agent wants to move around in
                                        //instead of centrePoint you can set it as the transform of the agent if you don't care about a specific area
         Vector3 nextPoint;
+
         private void Start()
         {
             agent = GetComponent<NavMeshAgent>();
             ChangeState(new IdleState());
             OnEnableWeapon();
+            OnInit();
         }
 
         // Update is called once per frame
@@ -27,7 +29,12 @@ public class Bot : Character
             }
         }
 
-        public void ChangeState(IState<Bot> state)
+
+    public override void OnInit()
+    {
+        base.OnInit();
+    }
+    public void ChangeState(IState<Bot> state)
         {
             if (currentState != null)
             {
@@ -44,7 +51,7 @@ public class Bot : Character
 
     public IEnumerator DoAttack()
     {
-        Attack();
+        OnAttack();
         float time = 0;
         float timer = 1.1f;
         while (time < timer)
@@ -65,21 +72,22 @@ public class Bot : Character
         yield return null;
     }
 
-    public override void Attack()
+    public override void OnAttack()
     {
-        base.Attack();
+        base.OnAttack();
         SpawnWeapon();
     }
     public void Moving()
     {
         agent.enabled = true;
-        if (agent)
+        if (agent.enabled)
         {
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
                 if (RandomPoint(centrePoint.position, range, out nextPoint))
                 {
                     ChangeAnim(Constant.ANIM_RUN);
+                    Debug.DrawRay(nextPoint, Vector3.up, Color.blue, 1.0f); //so you can see with gizmos
                     agent.SetDestination(nextPoint);
                 }
             }
@@ -101,7 +109,7 @@ public class Bot : Character
 
         Vector3 randomPoint = center + Random.insideUnitSphere * range; //random point in a sphere 
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas)) //documentation: https://docs.unity3d.com/ScriptReference/AI.NavMesh.SamplePosition.html
+        if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
         {
             result = hit.position;
             return true;
@@ -111,12 +119,13 @@ public class Bot : Character
         return false;
     }
 
-    public void IsDead()
+    public override void OnDeath()
     {
-        if (this._isDead)
-        {
-            ChangeState(new DeathState());
-        }
+        base.OnDeath();
+        SimplePool.Despawn(this.botName);
+        OnMoveStop();
+        SetMask(false);
+        LevelManager._instance.RemoveTarget(this);
     }
-   
+
 }

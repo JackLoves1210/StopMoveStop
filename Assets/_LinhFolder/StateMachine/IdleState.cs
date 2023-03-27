@@ -26,7 +26,7 @@ public class IdleState : IState<Bot>
             time = 0f;
         }
         time += Time.deltaTime;
-        if (t._isDead)
+        if (t.IsDead)
         {
             t.ChangeState(new DeathState());
         }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity;
 using UnityEngine;
 
 public class DeathState : IState<Bot>
@@ -9,16 +10,25 @@ public class DeathState : IState<Bot>
     public void OnEnter(Bot t)
     {
         timer = 2f;
-        t.ChangeAnim(Constant.ANIM_DEATH);
-        t.OnMoveStop();
+        t.OnDeath();
     }
 
     public void OnExecute(Bot t)
     {
         if (time > timer)
         {
+           
+            t.IsDead = false;
+          
             SimplePool.Despawn(t);
-        //    SimplePool.Spawn<Bot>(t, Vector3.zero, Quaternion.identity);
+            
+            LevelManager._instance.alive--;
+            if (LevelManager._instance.alive > BotManager._instance.realBot )
+            {
+                BotManager._instance.StartCoroutine(BotManager._instance.CoroutineSpawnBot());
+            }
+            
+            BotManager._instance.bots.Remove(t);
             time = 0;
         }
         time += Time.deltaTime;

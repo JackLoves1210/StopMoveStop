@@ -10,13 +10,15 @@ public class BotManager : MonoBehaviour
     public Bot enemyPrefab;
     public List<Bot> bots = new List<Bot>();
 
+    public Transform Canvas;
+
     public int totalBot;
     public int currentBot;
     public int realBot;
 
     public float spawnRangeX;
     public float spawnRangeZ;
-    public float minRange;
+    public float minDistance;
 
     private void Awake()
     {
@@ -24,30 +26,28 @@ public class BotManager : MonoBehaviour
     }
     void Start()
     {
+        LevelManager._instance.characters.Add(player);
+        player.OnInit();
         Oninit();
     }
 
     void Update()
     {
-       // SpawnBot();
+        // SpawnBot();
     }
 
     private void Oninit()
     {
-        totalBot = 20;
-        currentBot = totalBot;
-        realBot = 20;
         for (int i = 0; i < totalBot; i++)
         {
-            Bot bot = SimplePool.Spawn<Bot>(enemyPrefab, RandomPosition(), Quaternion.identity);
+            Bot bot = SimplePool.Spawn<Bot>(enemyPrefab, Vector3.zero, Quaternion.identity);
             bot.gameObject.SetActive(false);
             bots.Add(bot);
         }
-  
+
         for (int i = 0; i < realBot; i++)
         {
-            bots[i] = GetBotFormPool(); ;
-            bots[i].gameObject.SetActive(true);
+            SpawnBot();
         }
     }
 
@@ -60,7 +60,7 @@ public class BotManager : MonoBehaviour
                 return bots[i];
             }
         }
-        Bot bot = SimplePool.Spawn<Bot>(PoolType.Bot, RandomPosition(), Quaternion.identity);
+        Bot bot = SimplePool.Spawn<Bot>(PoolType.Bot, Vector3.zero, Quaternion.identity);
         bot.gameObject.SetActive(false);
         bots.Add(bot);
         return bot;
@@ -69,48 +69,66 @@ public class BotManager : MonoBehaviour
 
     public void SpawnBot()
     {
-  
-        for (int i = 0; i < realBot; i++)
+        Bot bot = GetBotFormPool();
+        //bot.transform.position = RandomPosition();
+        if (CheckRamdomPosition(bot))
         {
-            bots[i] = GetBotFormPool(); ;
-            bots[i].gameObject.SetActive(true);
+            bot.gameObject.SetActive(true);
+            LevelManager._instance.characters.Add(bot);
         }
+
+
+        BotName botName = BotNameManager._instance.GetBotNameFormPool();
+        botName.transform.SetParent(Canvas);
+        botName.gameObject.SetActive(true);
+        botName.target = bot.transform;
+       
     }
-    
-    Vector3 RandomPosition()
+
+    public IEnumerator CoroutineSpawnBot()
     {
-        Vector3 posPlayer = player.transform.position;
-        Debug.Log(posPlayer);
-        Vector3 randomPosition = new Vector3(Random.Range(-spawnRangeX, spawnRangeX), 0, Random.Range(-spawnRangeZ, spawnRangeZ));
-        for (int i = 0; i < bots.Count; i++)
+        yield return new WaitForSeconds(2f);
+        SpawnBot();
+
+    }
+    //Vector3 RandomPosition()
+    //{
+    //    Vector3 posPlayer = player.transform.position;
+    //    Vector3 randomPosition = new Vector3(Random.Range(-spawnRangeX, spawnRangeX), 0, Random.Range(-spawnRangeZ, spawnRangeZ));
+    //    for (int i = 0; i < bots.Count; i++)
+    //    {
+
+
+    //        float distanceToPlayer = Vector3.Distance(posPlayer, randomPosition);
+
+    //        while (distanceToPlayer < 5f)
+    //        {
+    //            randomPosition = new Vector3(Random.Range(-spawnRangeX, spawnRangeX), bots[i].transform.position.y, Random.Range(-spawnRangeZ, spawnRangeZ));
+    //            distanceToPlayer = Vector3.Distance(randomPosition, posPlayer);
+    //        }
+    //        return randomPosition;
+
+    //    }
+    //    return randomPosition;
+    //}
+
+    public bool CheckRamdomPosition(Character character)
+    {
+        bool validPosition = false;
+        while (!validPosition)
         {
-            
-
-            float distanceToPlayer = Vector3.Distance(posPlayer, randomPosition);
-
-            while (distanceToPlayer < 5f)
+            character.transform.position = new Vector3(Random.Range(-spawnRangeX, spawnRangeX), 0, Random.Range(-spawnRangeZ, spawnRangeZ));
+            validPosition = true;
+            foreach (Character otherCharacter in LevelManager._instance.characters)
             {
-                randomPosition = new Vector3(Random.Range(-spawnRangeX, spawnRangeX), bots[i].transform.position.y, Random.Range(-spawnRangeZ, spawnRangeZ));
-                distanceToPlayer = Vector3.Distance(randomPosition, posPlayer);
+                if (Vector3.Distance(character.transform.position, otherCharacter.transform.position) < minDistance)
+                {
+                    validPosition = false;
+                    break;
+                }
             }
-            return randomPosition;
-            
         }
-        return randomPosition;
-    }
-
-    bool RandomPoint(Vector3 center, float range, out Vector3 result)
-    {
-
-        Vector3 randomPoint = center + Random.insideUnitSphere * range; //random point in a sphere 
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas)) //documentation: https://docs.unity3d.com/ScriptReference/AI.NavMesh.SamplePosition.html
-        {
-            result = hit.position;
-            return true;
-        }
-
-        result = Vector3.zero;
-        return false;
+        return validPosition;
     }
 }
+        
