@@ -19,7 +19,6 @@ public class DeathState : IState<Bot>
         {
            
             t.IsDead = false;
-          
             SimplePool.Despawn(t);
             
             LevelManager._instance.alive--;

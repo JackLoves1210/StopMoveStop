@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour
     }
     void Start()
     {
-        player.OnInit();
+        //player.OnInit();
     }
 
     // Update is called once per frame

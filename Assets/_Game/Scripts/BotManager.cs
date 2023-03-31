@@ -10,10 +10,11 @@ public class BotManager : MonoBehaviour
     public Bot enemyPrefab;
     public List<Bot> bots = new List<Bot>();
 
-    public Transform Canvas;
+
+    
 
     public int totalBot;
-    public int currentBot;
+   // public int currentBot;
     public int realBot;
 
     public float spawnRangeX;
@@ -78,10 +79,11 @@ public class BotManager : MonoBehaviour
         }
 
 
-        BotName botName = BotNameManager._instance.GetBotNameFormPool();
-        botName.transform.SetParent(Canvas);
-        botName.gameObject.SetActive(true);
-        botName.target = bot.transform;
+        //BotName botName = BotNameManager._instance.GetBotNameFormPool();
+        //botName.transform.SetParent(Canvas);
+        //botName.gameObject.SetActive(true);
+        //botName.target = bot.transform;
+      
        
     }
 

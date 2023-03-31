@@ -30,6 +30,8 @@ public class Character : GameUnit
     public float _rangeAttack = 7f;
     private GameObject modelWeapon;
     string _currentAnim;
+
+    public Transform Canvas;
     //private Vector3 targetPoint;
     public bool IsDead { get; set; }
 
@@ -40,8 +42,12 @@ public class Character : GameUnit
         //targetIndicator = SimplePool.Spawn<TargetIndicator>(PoolType.TargetIndicator);
         //targetIndicator.SetTarget(indicatorPoint);
         //targetIndicator.SetName("YOU");
+        Canvas = GameObject.Find("Canvas_Indicator").transform;
+        botName = BotNameManager._instance.GetBotNameFormPool();
         botName.GetName();
-        
+        botName.transform.SetParent(Canvas);
+        botName.gameObject.SetActive(true);
+        botName.target = TF.transform;
     }
     public void OnEnableWeapon()
     {
@@ -147,6 +153,10 @@ public class Character : GameUnit
         return closestTarget;
     }
 
+    public virtual void OnDespawn()
+    {
+        SimplePool.Despawn(botName);
+    }
     public virtual void OnAttack()
     {
         LookEnemy();

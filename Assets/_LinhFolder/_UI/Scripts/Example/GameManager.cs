@@ -31,8 +31,7 @@ namespace UIExample
             //userData?.OnInitData();
 
             //ChangeState(GameState.MainMenu);
-
-            //UIManager.Ins.OpenUI<MainMenu>();
+            UIManager.Ins.OpenUI<MainMenu>();
         }
 
         //public static void ChangeState(GameState state)

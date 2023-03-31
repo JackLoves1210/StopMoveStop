@@ -119,12 +119,19 @@ public class Bot : Character
         return false;
     }
 
+    public override void OnDespawn()
+    {
+        base.OnDespawn();
+        CancelInvoke();
+    }
+
     public override void OnDeath()
     {
-        base.OnDeath();
-        SimplePool.Despawn(this.botName);
+       // ChangeState(null);
         OnMoveStop();
+        base.OnDeath();
         SetMask(false);
+        Invoke(nameof(OnDespawn), 2f);
         LevelManager._instance.RemoveTarget(this);
     }
 

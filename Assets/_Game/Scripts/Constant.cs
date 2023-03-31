@@ -13,6 +13,7 @@ public class Constant
 
     public const string TAG_CHARACTER = "Character";
     public const string TAG_BOT = "Bot";
+    public const string TAG_PLAYER = "Player";
     public const string TAG_BLOCK = "Block";
 
     public const int FRIST_INDEX = 0;

@@ -49,7 +49,6 @@ public class BotNameManager : MonoBehaviour
     {
         BotName botName = GetBotNameFormPool();
         botName.gameObject.SetActive(true);
-  
     }
     // Update is called once per frame
     void Update()

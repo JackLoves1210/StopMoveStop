@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace UIExample
 {
-    public class Lose : UICanvas
+    public class Loses : UICanvas
     {
         public Text score;
 

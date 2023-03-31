@@ -20,10 +20,12 @@ public class BotName : GameUnit
     {
         rand = Random.Range(0, listNameBot.Count);
         text.text = listNameBot[rand].ToString();
-        Debug.Log(text);
-        
     }
 
+    public void SetName()
+    {
+        text.text = "You";
+    }
     // Update is called once per frame
     void Update()
     {
@@ -31,7 +33,7 @@ public class BotName : GameUnit
         text.gameObject.SetActive(true);
         if (transform.position != viewPoint)
         {
-            transform.position = Vector3.Lerp(transform.position, viewPoint, Time.deltaTime * 60f);
+            transform.position = Vector3.Lerp(transform.position, viewPoint, Time.deltaTime * 120f);
         }
     }
 }

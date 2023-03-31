@@ -14,6 +14,6 @@ public class _UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        textAlive.text = LevelManager._instance.alive.ToString();
+       //textAlive.text = LevelManager._instance.alive.ToString();
     }
 }

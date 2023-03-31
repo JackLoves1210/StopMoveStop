@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UIExample;
 using UnityEngine;
 
 public class Player : Character
@@ -29,26 +30,32 @@ public class Player : Character
 
     private void Update()
     {
-        
+        if (this.IsDead)
+        {
+            this.OnDeath();
+            return;
+        }
         _time += Time.deltaTime;
-    
-        if (Input.GetMouseButtonUp(0))
+        if (!this.IsDead)
         {
-            _isMove = false;
-        }
-        else if (!_isMove && _listTarget.Count > 0)
-        {
-
-            if (_time >= _timeRate)
+            if (Input.GetMouseButtonUp(0))
             {
-                OnAttack();
-                _time = 0f;
+                _isMove = false;
             }
+            else if (!_isMove && _listTarget.Count > 0)
+            {
 
-        }
-        else if (!_isMove)
-        {
-            ChangeAnim(Constant.ANIM_IDLE);
+                if (_time >= _timeRate)
+                {
+                    OnAttack();
+                    _time = 0f;
+                }
+
+            }
+            else if (!_isMove)
+            {
+                ChangeAnim(Constant.ANIM_IDLE);
+            }
         }
     }
 
@@ -73,6 +80,15 @@ public class Player : Character
     public override void OnInit()
     {
         base.OnInit();
+        botName.SetName();
+    }
+    void SetNamePlayer()
+    {
+        botName = BotNameManager._instance.GetBotNameFormPool();
+        botName.SetName();
+        botName.transform.SetParent(Canvas);
+        botName.gameObject.SetActive(true);
+        botName.target = TF.transform;
     }
     public override void OnAttack()
     {
@@ -117,7 +133,10 @@ public class Player : Character
     }
     public override void OnDeath()
     {
-        base.OnDeath();
-       LevelManager._instance.RemoveTarget(this);
+         base.OnDeath();
+         Debug.Log("Isdes");
+         LevelManager._instance.RemoveTarget(this);
+         UIManager.Ins.OpenUI<Loses>();
+
     }
 }

@@ -348,6 +348,7 @@ GameObject:
   - component: {fileID: 6663500383837209559}
   - component: {fileID: 6663500383837209552}
   - component: {fileID: 6663500383837209553}
+  - component: {fileID: -4141000767019565004}
   - component: {fileID: 6663500383837209554}
   - component: {fileID: 6663500383837209555}
   m_Layer: 0
@@ -403,6 +404,23 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &-4141000767019565004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6663500383837209564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411060de4483b5e4c9847cd3cbc18554, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetColor: {r: 1, g: 0, b: 0, a: 1}
+  needBoxIndicator: 1
+  needArrowIndicator: 1
+  needDistanceText: 0
+  indicator: {fileID: 0}
 --- !u!114 &6663500383837209554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,6 +442,7 @@ MonoBehaviour:
   _weaponTransform: {fileID: 6663500382351588292}
   _wreaponPrefab: {fileID: 9136711226772746948, guid: 9d1e10e37e5be054ab9bef83613d91ba, type: 3}
   _rangeAttack: 7
+  Canvas: {fileID: 0}
   agent: {fileID: 0}
   range: 10
   centrePoint: {fileID: 6663500383837209559}
