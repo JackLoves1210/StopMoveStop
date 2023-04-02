@@ -15,17 +15,21 @@ public class IdleState : IState<Bot>
     public void OnExecute(Bot t)
     {
         timer = Random.Range(3f, 6f);
-        if (time > timer && t._listTarget.Count <= 0)
+        if (t.isCanMove)
         {
-            t.ChangeState(new PatrolState());
-            time = 0f;
+            if (time > timer && t._listTarget.Count <= 0)
+            {
+                t.ChangeState(new PatrolState());
+                time = 0f;
+            }
+            else if (t._listTarget.Count > 0 && time > durationTimeAttack)
+            {
+                t.ChangeState(new AttackState());
+                time = 0f;
+            }
+            time += Time.deltaTime;
+            
         }
-        else if (t._listTarget.Count > 0 && time > durationTimeAttack)
-        {
-            t.ChangeState(new AttackState());
-            time = 0f;
-        }
-        time += Time.deltaTime;
         if (t.IsDead)
         {
             t.ChangeState(new DeathState());

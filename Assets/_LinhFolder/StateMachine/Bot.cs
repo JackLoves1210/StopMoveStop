@@ -12,6 +12,7 @@ public class Bot : Character
                                        //instead of centrePoint you can set it as the transform of the agent if you don't care about a specific area
         Vector3 nextPoint;
 
+        public bool isCanMove;
         private void Start()
         {
             agent = GetComponent<NavMeshAgent>();
