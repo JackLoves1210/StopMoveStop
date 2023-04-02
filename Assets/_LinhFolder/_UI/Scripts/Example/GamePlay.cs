@@ -19,12 +19,6 @@ namespace UIExample
             CloseDirectly();
         }
 
-        public void LoseButton()
-        {
-            UIManager.Ins.OpenUI<Loses>().score.text = Random.Range(0, 100).ToString();
-            CloseDirectly();
-        }
-
         public void SettingButton()
         {
             UIManager.Ins.OpenUI<Setting>();

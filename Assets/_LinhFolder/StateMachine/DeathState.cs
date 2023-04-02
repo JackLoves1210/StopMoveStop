@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UIExample;
 using Unity;
 using UnityEngine;
 
@@ -26,8 +27,12 @@ public class DeathState : IState<Bot>
             {
                 BotManager._instance.StartCoroutine(BotManager._instance.CoroutineSpawnBot());
             }
-            
-            BotManager._instance.bots.Remove(t);
+            if (LevelManager._instance.alive == 1 )
+            {
+                UIManager.Ins.OpenUI<Win>();
+                UIManager.Ins.OpenUI<GamePlay>().CloseDirectly();
+            }
+                BotManager._instance.bots.Remove(t);
             time = 0;
         }
         time += Time.deltaTime;

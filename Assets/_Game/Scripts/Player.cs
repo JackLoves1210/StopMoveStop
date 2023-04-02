@@ -23,8 +23,9 @@ public class Player : Character
     void Start()
     {
         OnEnableWeapon();
-        
 
+        IsDead = false;
+        ChangeAnim("idle");
     }
     private WeaponCtl _obj;
 
@@ -137,6 +138,13 @@ public class Player : Character
          Debug.Log("Isdes");
          LevelManager._instance.RemoveTarget(this);
          UIManager.Ins.OpenUI<Loses>();
+         UIManager.Ins.OpenUI<GamePlay>().CloseDirectly();
+    }
 
+    public void OnRevive()
+    {
+        IsDead = false;
+        Debug.Log("Revive");
+        ChangeAnim("idle");
     }
 }
