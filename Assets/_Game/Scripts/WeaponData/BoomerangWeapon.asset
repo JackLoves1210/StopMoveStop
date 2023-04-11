@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2228daf751940c54d9b694937d76a504, type: 3}
   m_Name: BoomerangWeapon
   m_EditorClassIdentifier: 
-  _weapon: {fileID: 5647315131047741061, guid: ce02b2d2dd7e1934f8598533f76c6150, type: 3}
+  _weapon: {fileID: 3259376099688554716, guid: 6125edc1cd8ecb94da8f4360f6721f8f, type: 3}
+  _wreaponPrefab: {fileID: 4641636706332112390, guid: 1a7df750236d0d742b1e871b48d12fab, type: 3}
+  typeWeapon: 2

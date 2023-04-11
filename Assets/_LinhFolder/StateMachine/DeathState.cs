@@ -12,6 +12,8 @@ public class DeathState : IState<Bot>
     {
         timer = 2f;
         t.OnDeath();
+        t.ChangeColorOnDead();
+        t.isCanMove = false;
     }
 
     public void OnExecute(Bot t)
@@ -20,8 +22,9 @@ public class DeathState : IState<Bot>
         {
            
             t.IsDead = false;
+            t.ChangeState(new IdleState());
+           
             SimplePool.Despawn(t);
-            
             LevelManager._instance.alive--;
             if (LevelManager._instance.alive > BotManager._instance.realBot )
             {
@@ -32,7 +35,8 @@ public class DeathState : IState<Bot>
                 UIManager.Ins.OpenUI<Win>();
                 UIManager.Ins.OpenUI<GamePlay>().CloseDirectly();
             }
-                BotManager._instance.bots.Remove(t);
+            BotManager._instance.bots.Remove(t);
+            LevelManager._instance.characters.Remove(t);
             time = 0;
         }
         time += Time.deltaTime;
@@ -41,7 +45,7 @@ public class DeathState : IState<Bot>
 
     public void OnExit(Bot t)
     {
-
+        
     }
 
 }

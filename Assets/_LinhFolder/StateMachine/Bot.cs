@@ -4,36 +4,54 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class Bot : Character
-    {
-        private IState<Bot> currentState;
-        public NavMeshAgent agent;
-        public float range; //radius of sphere
-        public Transform centrePoint ; //centre of the area the agent wants to move around in
-                                       //instead of centrePoint you can set it as the transform of the agent if you don't care about a specific area
-        Vector3 nextPoint;
+{
+    private IState<Bot> currentState;
+    public NavMeshAgent agent;
+    public float range; //radius of sphere
+    public Transform centrePoint ; //centre of the area the agent wants to move around in
+                                    //instead of centrePoint you can set it as the transform of the agent if you don't care about a specific area
+    Vector3 nextPoint;
 
-        public bool isCanMove;
-        private void Start()
-        {
-            agent = GetComponent<NavMeshAgent>();
-            ChangeState(new IdleState());
-            OnEnableWeapon();
-            OnInit();
-        }
+    public bool isCanMove;
+
+    [SerializeField] private Material originalMaterial;
+    [SerializeField] private Material fadedMaterial;
+
 
         // Update is called once per frame
-        void Update()
+    void Update()
+    {
+        if (currentState != null)
         {
-            if (currentState != null)
-            {
-                currentState.OnExecute(this);
-            }
+            currentState.OnExecute(this);
         }
+    }
+
 
 
     public override void OnInit()
     {
         base.OnInit();
+        agent = GetComponent<NavMeshAgent>();
+        ChangeState(new IdleState());
+        ChangeWeapon(indexWeapon);
+        SetIndicator(this);
+        ChangeColorOnRevive();
+       
+    }
+
+    public override void ChangeWeapon(int index)
+    {
+        Debug.Log(_weaponType.typeWeapon);
+        base.ChangeWeapon(index);
+        index = Random.Range(0, weaponTypes.Length);
+        _weaponType = weaponTypes[index];
+
+        OnEnableWeapon(_weaponType);
+    }
+    public override void SetIndicator(Character character)
+    {
+        base.SetIndicator(character);
     }
     public void ChangeState(IState<Bot> state)
         {
@@ -54,7 +72,7 @@ public class Bot : Character
     {
         OnAttack();
         float time = 0;
-        float timer = 1.1f;
+        float timer = 1.11f;
         while (time < timer)
         {
             time += Time.deltaTime;
@@ -123,17 +141,28 @@ public class Bot : Character
     public override void OnDespawn()
     {
         base.OnDespawn();
+        this.IsDead = false;
+        SimplePool.Despawn(this);
         CancelInvoke();
     }
 
     public override void OnDeath()
     {
-       // ChangeState(null);
         OnMoveStop();
         base.OnDeath();
         SetMask(false);
-        Invoke(nameof(OnDespawn), 2f);
+        ClearTarget(this);
+        // Invoke(nameof(OnDespawn), 2f);
         LevelManager._instance.RemoveTarget(this);
     }
 
+    public void ChangeColorOnDead()
+    {
+    
+        TF.gameObject.GetComponentInChildren<Renderer>().material.color = Color.Lerp(originalMaterial.color, fadedMaterial.color, 1f);
+    }
+    public void ChangeColorOnRevive()
+    {
+        TF.gameObject.GetComponentInChildren<Renderer>().material.color = originalMaterial.color;
+    }
 }

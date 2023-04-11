@@ -27,18 +27,12 @@ public class BotManager : MonoBehaviour
     }
     void Start()
     {
+        OnInit();
+    }
+    public void OnInit()
+    {
         LevelManager._instance.characters.Add(player);
         player.OnInit();
-        Oninit();
-    }
-
-    void Update()
-    {
-        // SpawnBot();
-    }
-
-    private void Oninit()
-    {
         for (int i = 0; i < totalBot; i++)
         {
             Bot bot = SimplePool.Spawn<Bot>(enemyPrefab, Vector3.zero, Quaternion.identity);
@@ -46,7 +40,25 @@ public class BotManager : MonoBehaviour
             bots.Add(bot);
         }
 
-        for (int i = 0; i < realBot; i++)
+        SpawnRealBot(realBot);
+        LevelManager._instance.canvasIndicator.gameObject.SetActive(false);
+    }
+
+
+    public void SpawnBot(int quantityEnemy , int realbotSpawn)
+    {
+        for (int i = 0; i < quantityEnemy; i++)
+        {
+            Bot bot = SimplePool.Spawn<Bot>(enemyPrefab, Vector3.zero, Quaternion.identity);
+            bot.gameObject.SetActive(false);
+            bots.Add(bot);
+            
+        }
+        SpawnRealBot(realbotSpawn);
+    }
+    public void SpawnRealBot(int realBotSpawn)
+    {
+        for (int i = 0; i < realBotSpawn; i++)
         {
             SpawnBot();
         }
@@ -71,48 +83,20 @@ public class BotManager : MonoBehaviour
     public void SpawnBot()
     {
         Bot bot = GetBotFormPool();
-        //bot.transform.position = RandomPosition();
+        bot.OnInit();
         if (CheckRamdomPosition(bot))
         {
             bot.gameObject.SetActive(true);
             LevelManager._instance.characters.Add(bot);
         }
-
-
-        //BotName botName = BotNameManager._instance.GetBotNameFormPool();
-        //botName.transform.SetParent(Canvas);
-        //botName.gameObject.SetActive(true);
-        //botName.target = bot.transform;
-      
-       
     }
 
     public IEnumerator CoroutineSpawnBot()
     {
         yield return new WaitForSeconds(2f);
         SpawnBot();
-
     }
-    //Vector3 RandomPosition()
-    //{
-    //    Vector3 posPlayer = player.transform.position;
-    //    Vector3 randomPosition = new Vector3(Random.Range(-spawnRangeX, spawnRangeX), 0, Random.Range(-spawnRangeZ, spawnRangeZ));
-    //    for (int i = 0; i < bots.Count; i++)
-    //    {
 
-
-    //        float distanceToPlayer = Vector3.Distance(posPlayer, randomPosition);
-
-    //        while (distanceToPlayer < 5f)
-    //        {
-    //            randomPosition = new Vector3(Random.Range(-spawnRangeX, spawnRangeX), bots[i].transform.position.y, Random.Range(-spawnRangeZ, spawnRangeZ));
-    //            distanceToPlayer = Vector3.Distance(randomPosition, posPlayer);
-    //        }
-    //        return randomPosition;
-
-    //    }
-    //    return randomPosition;
-    //}
 
     public bool CheckRamdomPosition(Character character)
     {
@@ -132,5 +116,6 @@ public class BotManager : MonoBehaviour
         }
         return validPosition;
     }
+
 }
         

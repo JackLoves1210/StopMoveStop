@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6824596144151189987
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4444368857897904587, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+      propertyPath: m_Name
+      value: Arrow_Weapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 4756427370779268676, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4756427370779268676, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4756427370779268676, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5789697736484552327, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5789697736484552327, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5789697736484552327, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5789697736484552327, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5789697736484552327, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5789697736484552327, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5789697736484552327, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5789697736484552327, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5789697736484552327, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5789697736484552327, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5789697736484552327, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+--- !u!1 &7140536259049549864 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4444368857897904587, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
+  m_PrefabInstance: {fileID: 6824596144151189987}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1051448142979083235
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7140536259049549864}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.063998595, y: 0.6874409, z: 0.082153656}
+  m_Center: {x: -0.011430435, y: -0.063728675, z: 0.0018298365}
+--- !u!114 &-3258369430152368273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7140536259049549864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4c0c7d84e34d7842bf872a5f47f1b9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolType: 2
+  moveSpeed: 5
+  _character: {fileID: 0}
+  currentPostion: {x: 0, y: 0, z: 0}

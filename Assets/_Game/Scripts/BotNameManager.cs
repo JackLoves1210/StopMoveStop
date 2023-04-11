@@ -19,14 +19,12 @@ public class BotNameManager : MonoBehaviour
 
     private void Oninit()
     {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 10; i++)
         {
             BotName bot = SimplePool.Spawn<BotName>(botNamePrefab, Vector3.zero, Quaternion.identity);
             bot.gameObject.SetActive(false);
             botNames.Add(bot);
         }
-
-       
     }
 
     public BotName GetBotNameFormPool()
@@ -44,15 +42,9 @@ public class BotNameManager : MonoBehaviour
         return botName;
     }
 
-
     public void SpawnBotName()
     {
         BotName botName = GetBotNameFormPool();
         botName.gameObject.SetActive(true);
-    }
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

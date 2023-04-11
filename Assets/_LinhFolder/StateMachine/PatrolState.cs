@@ -14,17 +14,20 @@ public class PatrolState : IState<Bot>
 
     public void OnExecute(Bot t)
     {
-        t.Moving();
-        time += Time.deltaTime;
-        if (t._listTarget.Count > 0 && time > timer)
-        {
-            t.OnMoveStop();
-            t.ChangeState(new AttackState());
-            time = 0f;
-        }
         if (t.IsDead)
         {
             t.ChangeState(new DeathState());
+        }
+        else
+        {
+            t.Moving();
+            time += Time.deltaTime;
+            if (t._listTarget.Count > 0 && time > timer)
+            {
+                t.OnMoveStop();
+                t.ChangeState(new AttackState());
+                time = 0f;
+            }
         }
     }
 

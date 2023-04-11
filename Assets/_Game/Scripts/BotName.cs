@@ -27,13 +27,13 @@ public class BotName : GameUnit
         text.text = "You";
     }
     // Update is called once per frame
-    void Update()
+    private void LateUpdate()
     {
         viewPoint = Camera.main.WorldToScreenPoint(target.position + offset);
         text.gameObject.SetActive(true);
         if (transform.position != viewPoint)
         {
-            transform.position = Vector3.Lerp(transform.position, viewPoint, Time.deltaTime * 120f);
+            transform.position = Vector3.Lerp(transform.position, viewPoint, Time.deltaTime * 66);
         }
     }
 }

@@ -9,43 +9,37 @@ public class Player : Character
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _rotateSpeed;
     
-    
-   // [SerializeField] private CheckCharacter _checkCharacter;
-   // [SerializeField] private GameObject _wpeanponPrefab;
-   //[SerializeField] private WeaponCtl _wreaponPrefab;
     public bool _isMove;
     public bool _isCanAttack;
 
     private float _timeRate = 1.1f;
     private float _time = 0f;
 
-
-    void Start()
-    {
-        OnEnableWeapon();
-
-        IsDead = false;
-        ChangeAnim("idle");
-    }
+   
     private WeaponCtl _obj;
+    public bool isCanMove;
 
     private void Update()
     {
         if (this.IsDead)
         {
             this.OnDeath();
-            return;
         }
         _time += Time.deltaTime;
         if (!this.IsDead)
         {
+            if (LevelManager._instance.alive == 1)
+            {
+                ChangeAnim(Constant.ANIM_VICTORY);
+                return;
+            }
             if (Input.GetMouseButtonUp(0))
             {
                 _isMove = false;
+                _time = 1.1f;
             }
             else if (!_isMove && _listTarget.Count > 0)
             {
-
                 if (_time >= _timeRate)
                 {
                     OnAttack();
@@ -57,39 +51,69 @@ public class Player : Character
             {
                 ChangeAnim(Constant.ANIM_IDLE);
             }
+
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                indexWeapon++;
+                if (indexWeapon == weaponTypes.Length)
+                {
+                    indexWeapon = 0;
+                }
+                ChangeWeapon(indexWeapon);
+            }
+            
         }
     }
 
     void FixedUpdate()
     {
         Move();
-        
     }
 
-    private void Move()
-    {
-        if (Input.GetMouseButton(0) && JoystickControl.direct != Vector3.zero)
-        {
-            _isMove = true;
-            _rb.MovePosition(_rb.position + JoystickControl.direct *_moveSpeed * Time.fixedDeltaTime);
-            ChangeAnim(Constant.ANIM_RUN);
-            Vector3 direction = Vector3.RotateTowards(transform.forward, JoystickControl.direct, _rotateSpeed * Time.deltaTime, 0.0f);
-            transform.rotation = Quaternion.LookRotation(direction);
-        }
-    }
 
     public override void OnInit()
     {
         base.OnInit();
+        ResetPosition();
+        this.SetIndicator(this);
         botName.SetName();
+        OnEnableWeapon(_weaponType);
+        IsDead = false;
     }
-    void SetNamePlayer()
+
+    private void ResetPosition()
     {
-        botName = BotNameManager._instance.GetBotNameFormPool();
-        botName.SetName();
-        botName.transform.SetParent(Canvas);
-        botName.gameObject.SetActive(true);
-        botName.target = TF.transform;
+        TF.position = Vector3.zero;
+        TF.rotation = Quaternion.Euler(new Vector3(0,180,0));
+    }
+    private void Move()
+    {
+        if (isCanMove)
+        {
+            if (Input.GetMouseButton(0) && JoystickControl.direct != Vector3.zero)
+            {
+                _isMove = true;
+                _rb.MovePosition(_rb.position + JoystickControl.direct * _moveSpeed * Time.fixedDeltaTime);
+                ChangeAnim(Constant.ANIM_RUN);
+                Vector3 direction = Vector3.RotateTowards(transform.forward, JoystickControl.direct, _rotateSpeed * Time.deltaTime, 0.0f);
+                transform.rotation = Quaternion.LookRotation(direction);
+            }
+        }  
+    }
+
+    public override void ChangeWeapon(int index)
+    {
+        Debug.Log(_weaponType.typeWeapon);
+        base.ChangeWeapon(index);
+      //  int randIndex = Random.Range(0, weaponTypes.Length);
+        _weaponType = weaponTypes[index];
+        
+        OnEnableWeapon(_weaponType);
+    }
+
+    public override void SetIndicator(Character character)
+    {
+        base.SetIndicator(character);
     }
     public override void OnAttack()
     {
@@ -100,6 +124,7 @@ public class Player : Character
     public override void AddTarget(Character character)
     {
         base.AddTarget(character);
+        //  Debug.Log(GetClosestTarget());
         character.SetMask(true);
     }
 
@@ -135,10 +160,11 @@ public class Player : Character
     public override void OnDeath()
     {
          base.OnDeath();
-         Debug.Log("Isdes");
+         isCanMove = false;
          LevelManager._instance.RemoveTarget(this);
          UIManager.Ins.OpenUI<Loses>();
          UIManager.Ins.OpenUI<GamePlay>().CloseDirectly();
+         this.ClearTarget(this);
     }
 
     public void OnRevive()

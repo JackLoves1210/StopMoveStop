@@ -1,63 +1,72 @@
-      using System.Collections;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Character : GameUnit
 {
     //public const float TIME_DELAY_THROW = 0.4f;
-
     //public const float MAX_SIZE = 4f;
     //public const float MIN_SIZE = 1f;
-
     //protected float size = 1;
+
+
     public const float ATT_RANGE = 5f;
-    [SerializeField] public Animator _animator;
-    //[SerializeField] public Character _target;
-    //[SerializeField] public List<Character> _listTarget = new List<Character>();
-    [SerializeField] GameObject mask;
+    public Animator _animator;
+    public GameObject mask;
+    public BotName botName;
+    public List<Character> _listTarget = new List<Character>();
 
-    //[SerializeField] private TargetIndicator targetIndicator;
-    //[SerializeField] Transform indicatorPoint;
-
-    //[SerializeField] public Character _target;
-    [SerializeField] public BotName botName;
-    [SerializeField] public List<Character> _listTarget = new List<Character>();
-
-
-    [SerializeField] public WeaponType _WeaponType;
-    [SerializeField] public Transform _weaponTransform;
-    [SerializeField] private WeaponCtl _wreaponPrefab;
-    public float _rangeAttack = 7f;
+    public WeaponType[] weaponTypes;
+    public WeaponType _weaponType;
+    public Transform _weaponTransform;
+    public int indexWeapon = 0;
     private GameObject modelWeapon;
+
+    public Material[] pantTypes;
+    public GameObject modelPant;
+
+    public GameObject[] hatTypes;
+    public GameObject hatType;
+    public Transform hatTranform;
+
+    public float _rangeAttack = 5f;
+   
     string _currentAnim;
 
-    public Transform Canvas;
-    //private Vector3 targetPoint;
-    public bool IsDead { get; set; }
+   // public Transform canvasIndicator;
 
-  //  private Vector3 targetPoint;
+    public bool IsDead;
+
     public virtual void OnInit()
     {
         IsDead = false;
-        //targetIndicator = SimplePool.Spawn<TargetIndicator>(PoolType.TargetIndicator);
-        //targetIndicator.SetTarget(indicatorPoint);
-        //targetIndicator.SetName("YOU");
-        Canvas = GameObject.Find("Canvas_Indicator").transform;
-        botName = BotNameManager._instance.GetBotNameFormPool();
-        botName.GetName();
-        botName.transform.SetParent(Canvas);
-        botName.gameObject.SetActive(true);
-        botName.target = TF.transform;
+        ChangePant();
+        ChangeAccessory();
     }
-    public void OnEnableWeapon()
+
+    public virtual void SetIndicator(Character character)
+    {
+        // LevelManager._instance.canvasIndicator = GameObject.Find(Constant.NAME_CANVAS_INDICATOR).transform;
+        if (LevelManager._instance.canvasIndicator != null)
+        {
+            character.botName = BotNameManager._instance.GetBotNameFormPool();
+            character.botName.GetName();
+            character.botName.transform.SetParent(LevelManager._instance.canvasIndicator);
+            character.botName.gameObject.SetActive(true);
+            character.botName.target = TF.transform;
+        }
+        
+    }
+    public void OnEnableWeapon(WeaponType weaponType)
     {
         if (modelWeapon!= null)
         {
             Destroy(modelWeapon);
         }
-        if (_WeaponType._weapon != null)
+        if (weaponType._weapon != null)
         {
-            modelWeapon = Instantiate ( _WeaponType._weapon);
+            modelWeapon = Instantiate (weaponType._weapon);
             modelWeapon.transform.SetParent(_weaponTransform,false);
         }
     }
@@ -72,53 +81,7 @@ public class Character : GameUnit
     {
         modelWeapon.SetActive(true);
     }
-    //public void OnAttack()
-    //{
-    //    Debug.Log("_time");
-    //    float _timeRate = 1.1f;
-    //    float _time = 0f;
-    //    if (_time >= _timeRate)
-    //    {
-    //        Attack();
-    //        _time = 0f;
-    //    }
-    //    _time += Time.deltaTime;
-    //}
 
-    //public virtual void OnAttack()
-    //{
-    //    this._target = GetTargetInRange();
-
-    //    if (_target != null && !_target.IsDead/* && currentSkin.Weapon.IsCanAttack*/)
-    //    {
-    //        targetPoint = _target.transform.position;
-    //        transform.LookAt(targetPoint + (transform.position.y - targetPoint.y) * Vector3.up);
-    //        ChangeAnim(Constant.ANIM_ATTACK);
-    //    }
-
-    //}
-
-    //public Character GetTargetInRange()
-    //{
-    //    Character target = null;
-    //    float distance = float.PositiveInfinity;
-
-    //    for (int i = 0; i < _listTarget.Count; i++)
-    //    {
-    //        if (_listTarget[i] != null && _listTarget[i] != this && !_listTarget[i].IsDead && Vector3.Distance(transform.position, _listTarget[i].transform.position) <= ATT_RANGE)
-    //        {
-    //            float dis = Vector3.Distance(transform.position, _listTarget[i].transform.position);
-
-    //            if (dis < distance)
-    //            {
-    //                distance = dis;
-    //                target = _listTarget[i];
-    //            }
-    //        }
-    //    }
-
-    //    return target;
-    //}
     public Vector3 GetDirectionTaget()
     {
         Vector3 closestTarget = _listTarget[Constant.FRIST_INDEX].transform.position;
@@ -152,10 +115,13 @@ public class Character : GameUnit
         }
         return closestTarget;
     }
-
+    public void OnDespawnBotName(Character character)
+    {
+        SimplePool.Despawn(character.botName);
+    }
     public virtual void OnDespawn()
     {
-        SimplePool.Despawn(botName);
+        //SimplePool.Despawn(botName);
     }
     public virtual void OnAttack()
     {
@@ -200,10 +166,18 @@ public class Character : GameUnit
 
     public virtual void SpawnWeapon()
     {
-        if (this._listTarget.Count > 0)
+        Vector3 taget = GetClosestTarget();
+        if (this._listTarget.Count > 0 && _weaponType.typeWeapon == TypeWeapon.Boomerang)
         {
-            Vector3 taget = GetClosestTarget();
-            SimplePool.Spawn<WeaponCtl>(_wreaponPrefab, _weaponTransform.position, Quaternion.identity).Oninit(this, taget);
+            SimplePool.Spawn<WeaponBoommerang>(_weaponType._wreaponPrefab, _weaponTransform.position, Quaternion.identity).Oninit(this, taget);
+        }
+        else if (this._listTarget.Count > 0 && _weaponType.typeWeapon == TypeWeapon.FowardWeapon )
+        {
+            SimplePool.Spawn<WeaponForward>(_weaponType._wreaponPrefab, _weaponTransform.position, Quaternion.identity).Oninit(this, taget);
+        }
+        else if (this._listTarget.Count > 0 && _weaponType.typeWeapon == TypeWeapon.RotateWeapon)
+        {
+            SimplePool.Spawn<WeaponForward>(_weaponType._wreaponPrefab, _weaponTransform.position, Quaternion.identity).Oninit(this, taget);
         }
     }
 
@@ -211,7 +185,7 @@ public class Character : GameUnit
     {
         ChangeAnim("");
     }
-    public virtual void ChangeWeapon()
+    public virtual void ChangeWeapon(int index)
     {
 
     }
@@ -223,12 +197,21 @@ public class Character : GameUnit
 
     public virtual void ChangeAccessory()
     {
-
+        int index;
+        index = UnityEngine.Random.Range(0, pantTypes.Length);
+        if (hatType != null)
+        {
+            Destroy(hatType);
+        }
+        hatType = Instantiate(hatTypes[hatTypes.Length -1]);
+        hatType.transform.SetParent(hatTranform, false);
     }
 
     public virtual void ChangePant()
     {
-
+        int index;
+        index = UnityEngine.Random.Range(0, pantTypes.Length);
+        modelPant.transform.GetComponent<Renderer>().material = pantTypes[index];
     }
 
 
@@ -240,6 +223,11 @@ public class Character : GameUnit
     public virtual void OnDeath()
     {
         ChangeAnim(Constant.ANIM_DEATH);
+        SimplePool.Despawn(botName);
     }
-    
+
+    public void ClearTarget(Character character)
+    {
+        character._listTarget.Clear();
+    }
 }

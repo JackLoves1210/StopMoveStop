@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2228daf751940c54d9b694937d76a504, type: 3}
   m_Name: HammerWeapon 1
   m_EditorClassIdentifier: 
-  _weapon: {fileID: 919132149155446097, guid: 9b7a66174ec6eab4ebb155a56266eb78, type: 3}
+  _weapon: {fileID: 5396927736080274070, guid: ff52a471660d7a742ba45312ee2feeb3, type: 3}
+  _wreaponPrefab: {fileID: -1229420338022664574, guid: 3aebb1e833c148145b35df0c24a33986, type: 3}
+  typeWeapon: 1
