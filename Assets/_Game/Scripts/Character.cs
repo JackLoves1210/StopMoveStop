@@ -6,31 +6,38 @@ using UnityEngine;
 public class Character : GameUnit
 {
     //public const float TIME_DELAY_THROW = 0.4f;
-    //public const float MAX_SIZE = 4f;
-    //public const float MIN_SIZE = 1f;
-    //protected float size = 1;
+    public const float MAX_SIZE = 4f;
+    public const float MIN_SIZE = 1f;
+    public float size = 1;
 
 
-    public const float ATT_RANGE = 5f;
+    public float ATT_RANGE = 5f;
     public Animator _animator;
     public GameObject mask;
     public BotName botName;
     public List<Character> _listTarget = new List<Character>();
 
-    public WeaponType[] weaponTypes;
+   // public WeaponType[] weaponTypes;
     public WeaponType _weaponType;
     public Transform _weaponTransform;
     public int indexWeapon = 0;
     private GameObject modelWeapon;
 
-    public Material[] pantTypes;
+   // public Material[] pantTypes;
     public GameObject modelPant;
 
-    public GameObject[] hatTypes;
+    // skin
+    public GameObject modelSkin;
+
+  //  public GameObject[] hatTypes;
     public GameObject hatType;
     public Transform hatTranform;
 
-    public float _rangeAttack = 5f;
+    // accessory
+    public GameObject accessoryType;
+    public Transform accessoryTranform;
+    // material skin
+    public Material materialSkin;
    
     string _currentAnim;
 
@@ -41,22 +48,20 @@ public class Character : GameUnit
     public virtual void OnInit()
     {
         IsDead = false;
-        ChangePant();
-        ChangeAccessory();
+        ClearTarget(this);
     }
 
     public virtual void SetIndicator(Character character)
     {
-        // LevelManager._instance.canvasIndicator = GameObject.Find(Constant.NAME_CANVAS_INDICATOR).transform;
-        if (LevelManager._instance.canvasIndicator != null)
+        // LevelManager.Ins.canvasIndicator = GameObject.Find(Constant.NAME_CANVAS_INDICATOR).transform;
+        if (LevelManager.Ins.canvasIndicator != null)
         {
             character.botName = BotNameManager._instance.GetBotNameFormPool();
             character.botName.GetName();
-            character.botName.transform.SetParent(LevelManager._instance.canvasIndicator);
+            character.botName.transform.SetParent(LevelManager.Ins.canvasIndicator);
             character.botName.gameObject.SetActive(true);
             character.botName.target = TF.transform;
         }
-        
     }
     public void OnEnableWeapon(WeaponType weaponType)
     {
@@ -102,7 +107,12 @@ public class Character : GameUnit
 
     public Vector3 GetClosestTarget()
     {
-        Vector3 closestTarget = _listTarget[Constant.FRIST_INDEX].transform.position;
+        Vector3 closestTarget = new Vector3();
+        if (_listTarget.Count > 0)
+        {
+            closestTarget = _listTarget[Constant.FRIST_INDEX].transform.position;
+        }
+        else return closestTarget;
         float closestDistance = Vector3.Distance(TF.position, closestTarget);
         for (int i = 0; i < _listTarget.Count; i++)
         {
@@ -181,6 +191,12 @@ public class Character : GameUnit
         }
     }
 
+    public virtual void SetSize(float size)
+    {
+        size = Mathf.Clamp(size, MIN_SIZE, MAX_SIZE);
+        this.size = size;
+        TF.localScale = size * Vector3.one;
+    }
     public void ResetAnim()
     {
         ChangeAnim("");
@@ -190,28 +206,24 @@ public class Character : GameUnit
 
     }
 
-    public virtual void ChangdeSkin()
+    public virtual void ChangeSkin(int index)
     {
 
     }
 
-    public virtual void ChangeAccessory()
+    public virtual void ChangeHat(int index)
     {
-        int index;
-        index = UnityEngine.Random.Range(0, pantTypes.Length);
-        if (hatType != null)
-        {
-            Destroy(hatType);
-        }
-        hatType = Instantiate(hatTypes[hatTypes.Length -1]);
-        hatType.transform.SetParent(hatTranform, false);
+       
     }
 
-    public virtual void ChangePant()
+    public virtual void ChangeAccessory(int index)
     {
-        int index;
-        index = UnityEngine.Random.Range(0, pantTypes.Length);
-        modelPant.transform.GetComponent<Renderer>().material = pantTypes[index];
+        
+    }
+
+    public virtual void ChangePant(int index)
+    {
+    
     }
 
 
@@ -224,6 +236,7 @@ public class Character : GameUnit
     {
         ChangeAnim(Constant.ANIM_DEATH);
         SimplePool.Despawn(botName);
+        
     }
 
     public void ClearTarget(Character character)

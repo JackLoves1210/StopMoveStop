@@ -2,14 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+public class CameraFollow : Singleton<CameraFollow>
 {
     //[SerializeField] private Transform _tf;
     //[SerializeField] private Transform _target;
     //[SerializeField] private Vector3 _offset;
     //[SerializeField] private float _moveSpeed;
-
-    public static CameraFollow _instance;
     public enum State { MainMenu, Gameplay, Shop }
 
     [SerializeField] Transform tf;
@@ -36,7 +34,6 @@ public class CameraFollow : MonoBehaviour
 
     private void Awake()
     {
-        _instance = this;
         target = FindObjectOfType<Player>().transform;
         Camera = Camera.main;
     }

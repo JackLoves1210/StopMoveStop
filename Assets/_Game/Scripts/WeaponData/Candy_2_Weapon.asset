@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2228daf751940c54d9b694937d76a504, type: 3}
   m_Name: Candy_2_Weapon
   m_EditorClassIdentifier: 
+  _name: Ice-scream
   _weapon: {fileID: 1262931672566347631, guid: c5e47462b8b54be4d86a940289bcc12f, type: 3}
   _wreaponPrefab: {fileID: 5870566257656155856, guid: 4bb5809db764e5b4d9f4560845302690, type: 3}
   typeWeapon: 0

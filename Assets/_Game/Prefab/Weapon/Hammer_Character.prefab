@@ -94,6 +94,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hammer
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9b7a66174ec6eab4ebb155a56266eb78, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b7a66174ec6eab4ebb155a56266eb78, type: 3}
 --- !u!4 &5943930584975188560 stripped

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "WeaponType")]
-
 public class WeaponType : ScriptableObject
 {
+    public string _name;
     public GameObject _weapon;
     public WeaponCtl _wreaponPrefab;
     public TypeWeapon typeWeapon;

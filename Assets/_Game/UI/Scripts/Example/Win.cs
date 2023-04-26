@@ -10,17 +10,21 @@ namespace UIExample
     {
         public Text score;
 
+        public void Start()
+        {
+            UserData.Ins.coin += 100;
+            PlayerPrefs.SetInt("Coin", UserData.Ins.coin);
+            PlayerPrefs.Save();
+           // LevelManager.Ins.canvasIndicator.gameObject.SetActive(false);
+        }
         public void MainMenuButton()
         {
             //UIManager.Ins.OpenUI<MainMenu>();
-            LevelManager._instance.NextLevelGame();
-            CloseDirectly();
+            LevelManager.Ins.canvasIndicator.gameObject.SetActive(false);
+            LevelManager.Ins.NextLevelGame();
+            
+            // CloseDirectly();
         }
 
-        public void ResetGame()
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            Debug.Log("Reset");
-        }
     }
 }

@@ -12,18 +12,9 @@ namespace UIExample
 
         private void FixedUpdate()
         {
-            UIManager.Ins.OpenUI<GamePlay>().quantityCharacter.text = LevelManager._instance.alive.ToString();
-            UIManager.Ins.OpenUI<GamePlay>().numverLevel.text = LevelManager._instance.currentLevel.ToString();
+            UIManager.Ins.OpenUI<GamePlay>().quantityCharacter.text = LevelManager.Ins.alive.ToString();
+            UIManager.Ins.OpenUI<GamePlay>().numverLevel.text = LevelManager.Ins.currentLevel.ToString();
         }
-        public void WinButton()
-        {
-            UIManager.Ins.OpenUI<Win>().score.text = Random.Range(100, 200).ToString();
-            CloseDirectly();
-        }
-
-        public void SettingButton()
-        {
-            UIManager.Ins.OpenUI<Setting>();
-        }
+    
     }
 }

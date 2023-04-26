@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93427e7c7ad6c0347a42f2a65b9d6eae, type: 3}
+  m_Name: Witch_Skin
+  m_EditorClassIdentifier: 
+  materialSelf: {fileID: 2100000, guid: a4311537167da8b43b03bc0a3222c1b5, type: 2}
+  modelHat: {fileID: 2900340448003769874, guid: 719deb8cba6e62f409bac45ef469fa25, type: 3}
+  materialPant: {fileID: 2100000, guid: 6ac077b3713f79543a75ee8ca6b65627, type: 2}
+  modelAcessory: {fileID: 2469195248709513301, guid: ed3acef98fe9c914eb236b3b7fe67de6, type: 3}
+  modelWing: {fileID: 8716781362194732955, guid: 298ef27757167b84bbe4e1f97f20d386, type: 3}
+  poolType: 23

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2228daf751940c54d9b694937d76a504, type: 3}
   m_Name: UziWeapon
   m_EditorClassIdentifier: 
+  _name: Uzi
   _weapon: {fileID: 6387669351997899020, guid: d53171c3f1235e6489a9d28f4932ef52, type: 3}
   _wreaponPrefab: {fileID: 7017814325277163402, guid: b314c1de85bfbce4a970123c25e848de, type: 3}
   typeWeapon: 2

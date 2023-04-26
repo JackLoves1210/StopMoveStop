@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2228daf751940c54d9b694937d76a504, type: 3}
   m_Name: ZWeapon
   m_EditorClassIdentifier: 
+  _name: Z
   _weapon: {fileID: 4355140310381742181, guid: 22a6f9a7b6f681d489c3710d54bb07d5, type: 3}
   _wreaponPrefab: {fileID: -2824926415984553844, guid: 54e7266c6e7791a48827eb3e1d7e6848, type: 3}
   typeWeapon: 2

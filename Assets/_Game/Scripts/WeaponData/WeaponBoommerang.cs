@@ -20,7 +20,7 @@ public class WeaponBoommerang : WeaponCtl
     public override void Oninit(Character character, Vector3 target)
     {
         base.Oninit(character, target);
-        this.target = (target - character.TF.position).normalized * (Character.ATT_RANGE + 1) + character.TF.position + Vector3.up;
+        this.target = (target - character.TF.position).normalized * (character.ATT_RANGE + 1) + character.TF.position + Vector3.up;
         state = State.Forward;
     }
 

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2228daf751940c54d9b694937d76a504, type: 3}
   m_Name: ArrowWeapon
   m_EditorClassIdentifier: 
+  _name: Arrow
   _weapon: {fileID: 4444368857897904587, guid: 6862b6315e6d79e4586abdb3f62cf361, type: 3}
   _wreaponPrefab: {fileID: -3258369430152368273, guid: 98437e646d339ee41852a0f941540513, type: 3}
   typeWeapon: 0

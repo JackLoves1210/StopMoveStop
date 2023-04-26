@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93427e7c7ad6c0347a42f2a65b9d6eae, type: 3}
+  m_Name: Angle_Skin
+  m_EditorClassIdentifier: 
+  materialSelf: {fileID: 2100000, guid: b3a7d0ccf3c76f64dac22ffcf0916fa9, type: 2}
+  modelHat: {fileID: 7347278304864236869, guid: 1d8aaf63da7370e4ab333b6f6f28471d, type: 3}
+  materialPant: {fileID: 2100000, guid: e7fb1aeef8008d84f8fe77eaf332e02d, type: 2}
+  modelAcessory: {fileID: 207092480378025511, guid: 779b5755f94201f4aa3bec997a9b43e0, type: 3}
+  modelWing: {fileID: 7063639121075047784, guid: e7bed78b8d94b87459873fb80223b3bc, type: 3}
+  poolType: 22

@@ -7,8 +7,6 @@ public class WeaponForward : WeaponCtl
 
     [SerializeField] protected Vector3 currentPostion;
     
-
-
     void Start()
     {
         currentPostion = _character.transform.position;
@@ -26,7 +24,7 @@ public class WeaponForward : WeaponCtl
             hasUpdatedPosition = true;
         }
 
-        if (Vector3.Distance(transform.position, currentPostion) < _character._rangeAttack)
+        if (Vector3.Distance(transform.position, currentPostion) < _character.ATT_RANGE)
         {
             transform.forward = new Vector3(transform.forward.x, 0, transform.forward.z);
             transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);

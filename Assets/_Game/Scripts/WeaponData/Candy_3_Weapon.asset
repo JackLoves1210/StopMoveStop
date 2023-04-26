@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2228daf751940c54d9b694937d76a504, type: 3}
   m_Name: Candy_3_Weapon
   m_EditorClassIdentifier: 
+  _name: Lolly
   _weapon: {fileID: 2367628063493697424, guid: 9742286bc7e390b43a3e531f53add891, type: 3}
   _wreaponPrefab: {fileID: -7326133590387089563, guid: eae5d552eef378d49ac6d0831f9d6b49, type: 3}
   typeWeapon: 0

@@ -21,12 +21,22 @@ public class WeaponCtl : GameUnit
 
     private void OnTriggerEnter(Collider other)
     {
+        if (_character is Player && other.CompareTag(Constant.TAG_CHARACTER))
+        {
+            _character.SetSize(_character.size+0.05f);
+        }
         if (other.CompareTag(Constant.TAG_CHARACTER) && other.GetComponent<Character>() != _character)
         {
             OnDespawn();
-            other.GetComponent<Character>().IsDead = true;
+            other.GetComponent<Character>().IsDead = true; 
             _character.RemoveTarget(other.GetComponent<Character>());
             hasUpdatedPosition = false;
+            
+        }
+        if (other.GetComponent<Character>() is Player && other.CompareTag(Constant.TAG_CHARACTER))
+        {
+            AudioManager.Ins.Play(Constant.AUDIO_DEAD);
+            Debug.Log(Constant.AUDIO_DEAD);
         }
     }
 }

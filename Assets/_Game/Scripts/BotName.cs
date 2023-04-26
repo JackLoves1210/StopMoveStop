@@ -11,20 +11,15 @@ public class BotName : GameUnit
     public Transform target;
     Vector3 viewPoint;
     public Vector3 offset;
-    void Start()
-    {
-        //GetName();
-    }
-
     public void GetName()
     {
         rand = Random.Range(0, listNameBot.Count);
         text.text = listNameBot[rand].ToString();
     }
 
-    public void SetName()
+    public void SetName(string name)
     {
-        text.text = "You";
+        text.text = name;
     }
     // Update is called once per frame
     private void LateUpdate()

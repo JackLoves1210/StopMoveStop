@@ -8,6 +8,13 @@ namespace UIExample
     public class Loses : UICanvas
     {
         [SerializeField] Player player;
+        public void Start()
+        {
+            UserData.Ins.coin += 100;
+            PlayerPrefs.SetInt("Coin", UserData.Ins.coin);
+            PlayerPrefs.Save();
+           // LevelManager.Ins.canvasIndicator.gameObject.SetActive(false);
+        }
 
         public override void Open()
         {
@@ -16,9 +23,9 @@ namespace UIExample
         }
         public void MainMenuButton()
         {
-            LevelManager._instance.LoseGame();
-            LevelManager._instance.canvasIndicator.gameObject.SetActive(false);
-            this.CloseDirectly();
+            LevelManager.Ins.LoseGame();
+            LevelManager.Ins.canvasIndicator.gameObject.SetActive(false);
+           // this.CloseDirectly();
         }
     }
 }

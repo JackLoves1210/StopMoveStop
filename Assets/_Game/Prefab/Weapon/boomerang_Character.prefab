@@ -102,6 +102,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: boomerang
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 86276d33ef4c40f4fb58119221e1ca59, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86276d33ef4c40f4fb58119221e1ca59, type: 3}
 --- !u!4 &971177465360356672 stripped

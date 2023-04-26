@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2228daf751940c54d9b694937d76a504, type: 3}
   m_Name: Candy_1_Weapon
   m_EditorClassIdentifier: 
+  _name: Sticky-pop
   _weapon: {fileID: 3468953123511323543, guid: 5410b9701e2eea04cb9922783cdb20f9, type: 3}
   _wreaponPrefab: {fileID: -1951232824377191764, guid: a4461bc4234dc5d4ebf39bf319cdd9b8, type: 3}
   typeWeapon: 0

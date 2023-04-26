@@ -8,61 +8,73 @@ public class Player : Character
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _rotateSpeed;
-    
+
+    public GameObject modelWing;
+    public Transform wingTranform;
+
     public bool _isMove;
     public bool _isCanAttack;
 
     private float _timeRate = 1.1f;
     private float _time = 0f;
 
-   
-    private WeaponCtl _obj;
     public bool isCanMove;
 
     private void Update()
     {
-        if (this.IsDead)
+        switch (LevelManager.Ins.stateGame)
         {
-            this.OnDeath();
-        }
-        _time += Time.deltaTime;
-        if (!this.IsDead)
-        {
-            if (LevelManager._instance.alive == 1)
-            {
-                ChangeAnim(Constant.ANIM_VICTORY);
-                return;
-            }
-            if (Input.GetMouseButtonUp(0))
-            {
-                _isMove = false;
-                _time = 1.1f;
-            }
-            else if (!_isMove && _listTarget.Count > 0)
-            {
-                if (_time >= _timeRate)
+            case LevelManager.StateGame.MainMenu:
+                this.ChangeAnim(Constant.ANIM_IDLE);
+                break;
+            case LevelManager.StateGame.Shop:
+                this.ChangeAnim(Constant.ANIM_VICTORY);
+                break;
+            case LevelManager.StateGame.GamePlay:
+                if (this.IsDead)
                 {
-                    OnAttack();
-                    _time = 0f;
+                    this.OnDeath();
                 }
-
-            }
-            else if (!_isMove)
-            {
-                ChangeAnim(Constant.ANIM_IDLE);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                indexWeapon++;
-                if (indexWeapon == weaponTypes.Length)
+                _time += Time.deltaTime;
+                if (!this.IsDead)
                 {
-                    indexWeapon = 0;
+                    if (LevelManager.Ins.alive == 1)
+                    {
+                        isCanMove = false;
+                        ChangeAnim(Constant.ANIM_VICTORY);
+                        return;
+                    }
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        _isMove = false;
+                        _time = 1.1f;
+                    }
+                    else if (!_isMove && _listTarget.Count > 0)
+                    {
+                        if (_time >= _timeRate)
+                        {
+                            OnAttack();
+                            _time = 0f;
+                        }
+
+                    }
+                    else if (!_isMove)
+                    {
+                        ChangeAnim(Constant.ANIM_IDLE);
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.Tab))
+                    {
+                        size += 0.1f;
+                        this.SetSize(size);
+                    }
+
                 }
-                ChangeWeapon(indexWeapon);
-            }
-            
+                break;
+            default:
+                break;
         }
+        
     }
 
     void FixedUpdate()
@@ -74,13 +86,54 @@ public class Player : Character
     public override void OnInit()
     {
         base.OnInit();
+        ChangeHat(ItemManager.Ins.hatTypes.Length-1);
+        ChangeAccessory(ItemManager.Ins.accessoryTypes.Length-1);
+        ChangePant(ItemManager.Ins.pantTypes.Length - 1);
+        ChangeSkin(0);
         ResetPosition();
         this.SetIndicator(this);
-        botName.SetName();
+        SetName();
         OnEnableWeapon(_weaponType);
         IsDead = false;
     }
 
+    public void SetName()
+    {
+        if (PlayerPrefs.HasKey(UserData.Key_NamePlayer))
+        {
+            botName.SetName(PlayerPrefs.GetString(UserData.Key_NamePlayer));
+        }
+        else
+        {
+            botName.SetName("You");
+        }
+    }
+    public void TryClosest(UIShop uIShop)
+    {
+        
+        switch (uIShop.currentItemBar)
+        {
+            case 0:
+                ChangeHat(uIShop.GetIndexItem(uIShop.currentItem));
+               // Debug.Log("ChangHat : " + uIShop.indexItem);
+                break;
+            case 1:
+                ChangePant(uIShop.indexItem - ItemManager.Ins.hatTypes.Length + 1);
+               // Debug.Log("ChangPant : "+ (uIShop.indexItem - ItemManager.Ins.hatTypes.Length + 1));
+                break;
+            case 2:
+                ChangeAccessory(uIShop.indexItem - ItemManager.Ins.hatTypes.Length - ItemManager.Ins.pantTypes.Length + 2);
+               // Debug.Log("ChangAccessory : "+ (uIShop.indexItem - ItemManager.Ins.hatTypes.Length - ItemManager.Ins.pantTypes.Length + 2));
+                break;
+            case 3:
+                ChangeSkin(uIShop.indexItem - ItemManager.Ins.hatTypes.Length - ItemManager.Ins.pantTypes.Length - ItemManager.Ins.accessoryTypes.Length + 3);
+               // Debug.Log("ChangAccessory : " + (uIShop.indexItem - ItemManager.Ins.hatTypes.Length - ItemManager.Ins.pantTypes.Length - ItemManager.Ins.accessoryTypes.Length + 3));
+                break;
+            default:
+                break;
+               
+        }  
+    }
     private void ResetPosition()
     {
         TF.position = Vector3.zero;
@@ -101,16 +154,74 @@ public class Player : Character
         }  
     }
 
+    public override void ChangeSkin(int index)
+    {
+        base.ChangeSkin(index);
+
+        // change hat
+        if (hatType != null)
+        {
+            Destroy(hatType);
+        }
+        hatType = Instantiate(ItemManager.Ins.skinTypes[index].modelHat);
+        hatType.transform.SetParent(hatTranform, false);
+
+        // change pant
+        modelPant.transform.GetComponent<Renderer>().material = ItemManager.Ins.skinTypes[index].materialPant;
+
+        // change skin
+        modelSkin.GetComponent<Renderer>().material = ItemManager.Ins.skinTypes[index].materialSelf;
+
+        // change accessory
+        if (hatType != null)
+        {
+            Destroy(accessoryType);
+        }
+        accessoryType = Instantiate(ItemManager.Ins.skinTypes[index].modelAcessory);
+        accessoryType.transform.SetParent(accessoryTranform, false);
+        // change wing
+        if (modelWing != null)
+        {
+            Destroy(modelWing);
+        }
+        modelWing = Instantiate(ItemManager.Ins.skinTypes[index].modelWing);
+        modelWing.transform.SetParent(wingTranform, false);
+
+    }
     public override void ChangeWeapon(int index)
     {
-        Debug.Log(_weaponType.typeWeapon);
         base.ChangeWeapon(index);
       //  int randIndex = Random.Range(0, weaponTypes.Length);
-        _weaponType = weaponTypes[index];
+        _weaponType = ItemManager.Ins.weaponTypes[index];
         
         OnEnableWeapon(_weaponType);
     }
 
+    public override void ChangeHat(int index)
+    {
+        base.ChangeHat(index);
+        if (hatType != null)
+        {
+            Destroy(hatType);
+        }
+        hatType = Instantiate(ItemManager.Ins.hatTypes[index]);
+        hatType.transform.SetParent(hatTranform, false);
+    }
+    public override void ChangeAccessory(int index)
+    {
+        base.ChangeAccessory(index);
+        if (hatType != null)
+        {
+            Destroy(accessoryType);
+        }
+        accessoryType = Instantiate(ItemManager.Ins.accessoryTypes[index]);
+        accessoryType.transform.SetParent(accessoryTranform, false);
+    }
+    public override void ChangePant(int index)
+    {
+        base.ChangePant(index);
+        modelPant.transform.GetComponent<Renderer>().material = ItemManager.Ins.pantTypes[index];
+    }
     public override void SetIndicator(Character character)
     {
         base.SetIndicator(character);
@@ -161,16 +272,29 @@ public class Player : Character
     {
          base.OnDeath();
          isCanMove = false;
-         LevelManager._instance.RemoveTarget(this);
+        
+        LevelManager.Ins.RemoveTarget(this);
          UIManager.Ins.OpenUI<Loses>();
          UIManager.Ins.OpenUI<GamePlay>().CloseDirectly();
          this.ClearTarget(this);
     }
 
+    public override void SetSize(float size)
+    {
+        base.SetSize(size);
+        this.ATT_RANGE += 0.5f;
+        CameraFollow.Ins.SetRateOffset((this.size - MIN_SIZE) / (MAX_SIZE - MIN_SIZE));
+        _moveSpeed += 0.25f;
+    }
     public void OnRevive()
     {
+        base.OnInit();
+        ResetPosition();
+        this.SetIndicator(this);
+        SetName();
+        this.SetSize(1);
         IsDead = false;
-        Debug.Log("Revive");
-        ChangeAnim("idle");
+        ATT_RANGE = 5f;
+        _moveSpeed = 5f;
     }
 }

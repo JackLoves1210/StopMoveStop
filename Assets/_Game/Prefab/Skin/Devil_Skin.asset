@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93427e7c7ad6c0347a42f2a65b9d6eae, type: 3}
+  m_Name: Devil_Skin
+  m_EditorClassIdentifier: 
+  materialSelf: {fileID: 2100000, guid: 2f8b07ac81db57a41b8f6d6d2c27d5c2, type: 2}
+  modelHat: {fileID: 5846900228039748830, guid: 51602ef2ba03e6449a6c9010a6bbfded, type: 3}
+  materialPant: {fileID: 2100000, guid: 7e72740b26e3e984a9adf843f3eececc, type: 2}
+  modelAcessory: {fileID: -927199367670048503, guid: 11b8cec584ec01c4c90f33b4ee17a0c5, type: 3}
+  modelWing: {fileID: 532172851431448563, guid: 91b209d2289ca09499bdb6e0012c6f4e, type: 3}
+  poolType: 21
