@@ -435,6 +435,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolType: 1
+  size: 1
+  ATT_RANGE: 6
   _animator: {fileID: 8613474330096482152}
   mask: {fileID: 6663500383073148812}
   botName: {fileID: 1040812354325422142, guid: 31ea43d981ff5b840821e63e841f9b27, type: 3}
@@ -449,7 +451,6 @@ MonoBehaviour:
   accessoryType: {fileID: 0}
   accessoryTranform: {fileID: 7544023064674045610}
   materialSkin: {fileID: 0}
-  _rangeAttack: 6
   IsDead: 0
   agent: {fileID: 0}
   range: 10

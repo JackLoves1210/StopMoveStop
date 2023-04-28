@@ -6,15 +6,12 @@ public class WeaponBoommerang : WeaponCtl
 {
 
     private Vector3 target;
-
     public enum State { Forward, Backward, Stop }
 
     private State state;
 
     private void Update()
     {
-        //MoveForward();
-        //RotateAndMove();
         Boomearang();
     }
     public override void Oninit(Character character, Vector3 target)

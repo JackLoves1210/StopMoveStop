@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 4964160983332896571}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.1247622, y: 1.1247622, z: 1.1247622}
   m_Children:
   - {fileID: 254600703870840486}
   m_Father: {fileID: 0}
@@ -60,8 +60,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolType: 9
-  moveSpeed: 5
   _character: {fileID: 0}
+  moveSpeed: 5
   hasUpdatedPosition: 0
 --- !u!82 &-8509086736180783809
 AudioSource:

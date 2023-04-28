@@ -6,7 +6,7 @@ using UnityEngine;
 public class Character : GameUnit
 {
     //public const float TIME_DELAY_THROW = 0.4f;
-    public const float MAX_SIZE = 4f;
+    public const float MAX_SIZE = 1.8f;
     public const float MIN_SIZE = 1f;
     public float size = 1;
 
@@ -53,11 +53,11 @@ public class Character : GameUnit
 
     public virtual void SetIndicator(Character character)
     {
-        // LevelManager.Ins.canvasIndicator = GameObject.Find(Constant.NAME_CANVAS_INDICATOR).transform;
         if (LevelManager.Ins.canvasIndicator != null)
         {
             character.botName = BotNameManager._instance.GetBotNameFormPool();
             character.botName.GetName();
+            character.botName.SetColor(botName.colors[0]);
             character.botName.transform.SetParent(LevelManager.Ins.canvasIndicator);
             character.botName.gameObject.SetActive(true);
             character.botName.target = TF.transform;
@@ -179,15 +179,24 @@ public class Character : GameUnit
         Vector3 taget = GetClosestTarget();
         if (this._listTarget.Count > 0 && _weaponType.typeWeapon == TypeWeapon.Boomerang)
         {
-            SimplePool.Spawn<WeaponBoommerang>(_weaponType._wreaponPrefab, _weaponTransform.position, Quaternion.identity).Oninit(this, taget);
+            WeaponBoommerang weapon = SimplePool.Spawn<WeaponBoommerang>(_weaponType._wreaponPrefab, _weaponTransform.position, Quaternion.identity);
+            weapon.transform.localScale = this.size * Vector3.one;
+            weapon.moveSpeed = 7 * size;
+            weapon.Oninit(this, taget);
         }
-        else if (this._listTarget.Count > 0 && _weaponType.typeWeapon == TypeWeapon.FowardWeapon )
+        else if (this._listTarget.Count > 0 && _weaponType.typeWeapon == TypeWeapon.FowardWeapon)
         {
-            SimplePool.Spawn<WeaponForward>(_weaponType._wreaponPrefab, _weaponTransform.position, Quaternion.identity).Oninit(this, taget);
+            WeaponForward weapon = SimplePool.Spawn<WeaponForward>(_weaponType._wreaponPrefab, _weaponTransform.position, Quaternion.identity);
+            weapon.transform.localScale = this.size * Vector3.one;
+            weapon.moveSpeed = 7*size;
+            weapon.Oninit(this, taget);
         }
         else if (this._listTarget.Count > 0 && _weaponType.typeWeapon == TypeWeapon.RotateWeapon)
         {
-            SimplePool.Spawn<WeaponForward>(_weaponType._wreaponPrefab, _weaponTransform.position, Quaternion.identity).Oninit(this, taget);
+            WeaponForward weapon = SimplePool.Spawn<WeaponForward>(_weaponType._wreaponPrefab, _weaponTransform.position, Quaternion.identity);
+            weapon.transform.localScale = this.size * Vector3.one;
+            weapon.moveSpeed = 7*size;
+            weapon.Oninit(this, taget);
         }
     }
 

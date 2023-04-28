@@ -6,15 +6,14 @@ public class ButtonState : MonoBehaviour
 {
     public enum State { Buy, Equip, Equiped }
     public State state;
-    public State[] shopWeaponStatus;
+    public List<State> shopWeaponStatus;
 
     public void Start()
     {
         //shopWeaponStatus = new State[ItemManager.Ins.weaponTypes.Length];
-        //for (int i = 0; i < shopWeaponStatus.Length; i++)
-        //{
-        //    shopWeaponStatus[i] = State.Buy;
-        //}
+        //PlayerPrefs.DeleteKey("Shop_Weapon_Status");
+
+        
     }
 
     [SerializeField] GameObject[] buttonObjects;

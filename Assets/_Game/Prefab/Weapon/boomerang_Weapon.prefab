@@ -239,6 +239,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolType: 8
-  moveSpeed: 5
   _character: {fileID: 0}
+  moveSpeed: 5
   hasUpdatedPosition: 0

@@ -19,19 +19,6 @@ public class AudioManager : Singleton<AudioManager>
             s.source.spatialBlend = s.spatialBlend;
         }
     }
-
-    public void Play(string name, Transform transform)
-    {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
-        if (s == null)
-        {
-            Debug.LogWarning("Sound: " + name + "not found!");
-            return;
-        }
-        
-        s.source.Play();
-        s.source.transform.SetParent(transform, false);
-    }
     public void Play(string name)
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
@@ -41,5 +28,17 @@ public class AudioManager : Singleton<AudioManager>
             return;
         }
         s.source.Play();
+    }
+
+    public void MuteHandler(bool mute)
+    {
+        if (mute)
+        {
+            AudioListener.volume = 0;
+        }
+        else
+        {
+            AudioListener.volume = 1;
+        }
     }
 }

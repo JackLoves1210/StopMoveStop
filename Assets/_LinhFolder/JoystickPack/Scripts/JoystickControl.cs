@@ -15,6 +15,7 @@ public class JoystickControl : MonoBehaviour
 
     public RectTransform joystickBG;
     public RectTransform joystickControl;
+    public GameObject guidePanel;
     public float magnitude;
 
     public GameObject joystickPanel;
@@ -53,6 +54,7 @@ public class JoystickControl : MonoBehaviour
         joystickBG.anchoredPosition = startPoint;
         joystickPanel.SetActive(true);
         active = true;
+        guidePanel.SetActive(false);
     }
 
     public void ButtonUp()

@@ -106,3 +106,6 @@ MonoBehaviour:
   text: {fileID: 6661993813588200487}
   target: {fileID: 0}
   offset: {x: 0, y: 2.5, z: 1}
+  colors:
+  - {r: 1, g: 0, b: 0.13022375, a: 1}
+  - {r: 0, g: 1, b: 0, a: 1}

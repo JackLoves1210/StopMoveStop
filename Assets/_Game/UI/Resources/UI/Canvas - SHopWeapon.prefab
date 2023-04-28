@@ -1243,7 +1243,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2885922731224711157, guid: d3d1951c8740a85458b7ddcc4ae8d44b, type: 3}
       propertyPath: shopWeaponStatus.Array.data[0]
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3528101739327734854, guid: d3d1951c8740a85458b7ddcc4ae8d44b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

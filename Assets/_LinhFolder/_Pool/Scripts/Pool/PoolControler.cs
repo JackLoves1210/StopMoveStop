@@ -197,6 +197,13 @@ public enum PoolType
 
     TargetIndicator,
     BotName,
+
+    Map_1,
+    Map_2,
+    Map_3,
+    Map_4,
+    Map_5,
+
 }
 
 

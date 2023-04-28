@@ -8,33 +8,61 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : Singleton<LevelManager>
 {
     public Player player;
-    public static LevelManager Ins;
     public List<Character> characters;
     public enum StateGame { MainMenu, Shop, GamePlay }
     public StateGame stateGame;
     public Transform canvasIndicator;
     public int alive ;
-    [SerializeField] private int maxAlive;
+    public int maxAlive;
     public int currentLevel;
-    [SerializeField] private NavMeshData []navMeshDatas;
-    [SerializeField] private NavMeshData currentNavMesh;
+    //[SerializeField] public NavMeshData []navMeshDatas;
+    //[SerializeField] public NavMeshData currentNavMesh;
+    [SerializeField] private Map[] mapFrefab;
+   // [SerializeField] private Map currentMap;
+    [SerializeField] private List<Map> maps;
     private void Awake()
     {
-        Ins = this;
         canvasIndicator = GameObject.FindGameObjectWithTag(Constant.NAME_CANVAS_INDICATOR).transform;
-    }
-    private void Start()
-    {
+        UserData.Ins.OnInitData();
+        PlayerPrefs.DeleteKey(UserData.Key_Level);
+        PlayerPrefs.DeleteKey(UserData.Key_MaxAlive);
         if (PlayerPrefs.HasKey(UserData.Key_Level))
         {
-            currentLevel= PlayerPrefs.GetInt(UserData.Key_Level);
-            maxAlive = PlayerPrefs.GetInt(UserData.Key_Level,3);
+            currentLevel = PlayerPrefs.GetInt(UserData.Key_Level);
         }
         else currentLevel = 1;
-       // LoadNavMeshData(navMeshDatas[0]);
+        for (int i = 0; i < mapFrefab.Length; i++)
+        {
+            Map map =SimplePool.Spawn<Map>(mapFrefab[i]);
+            map.gameObject.SetActive(false);
+            maps.Add(map);
+        }
+        maps[currentLevel - 1].gameObject.SetActive(true);
+        //currentMap = SimplePool.Spawn<Map>(maps[currentLevel - 1]);
+        maxAlive = PlayerPrefs.GetInt(UserData.Key_MaxAlive, 10);
+        alive = maxAlive;
+    }
+
+    public void Update()
+    {
+      
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            Debug.Log("s");
+            SimplePool.Despawn(maps[currentLevel - 1]);
+            
+
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Debug.Log("s");
+            currentLevel++;
+            maps[currentLevel - 1].gameObject.SetActive(true);
+
+        }
     }
     public void OnReset()
     {
@@ -57,7 +85,7 @@ public class LevelManager : MonoBehaviour
         characters.Clear();
         OnReset();
         alive = maxAlive;
-
+        PlayerPrefs.SetInt(UserData.Key_MaxAlive, maxAlive);
         //OnLoadLevel(levelIndex);
         UIManager.Ins.OpenUI<Loses>().CloseDirectly();
         BotManager._instance.SpawnBot(alive, BotManager._instance.realBot);
@@ -68,28 +96,29 @@ public class LevelManager : MonoBehaviour
     {
         characters.Clear();
         OnReset();
-        maxAlive += 1;
+        maxAlive = PlayerPrefs.GetInt(UserData.Key_MaxAlive);
+        maxAlive += 10;
+        PlayerPrefs.SetInt(UserData.Key_MaxAlive, maxAlive);
         alive = maxAlive;
-        PlayerPrefs.SetInt("MaxAlive", maxAlive);
+        NextLevel();
         //OnLoadLevel(levelIndex);
         UIManager.Ins.OpenUI<Win>().CloseDirectly();
         BotManager._instance.SpawnBot(alive, BotManager._instance.realBot);
-        NextLevel();
+        
         UIManager.Ins.OpenUI<MainMenu>();
         PlayerPrefs.Save();
     }
 
     public void NextLevel()
     {
+
+        SimplePool.Despawn(maps[currentLevel-1]);
         currentLevel++;
+        maps[currentLevel - 1].gameObject.SetActive(true);
         PlayerPrefs.SetInt(UserData.Key_Level, currentLevel);
-        currentNavMesh = navMeshDatas[currentLevel - 1];
-        NavMesh.RemoveAllNavMeshData();
-        NavMesh.AddNavMeshData(currentNavMesh);
-      //  SaveNavMeshData(currentNavMesh);
-        PlayerPrefs.Save(); // Lưu thay đổi vào bộ nhớ
-
-
+        //NavMesh.RemoveAllNavMeshData();
+        //NavMesh.AddNavMeshData(currentNavMesh);
+        PlayerPrefs.Save(); 
     }
     public void RemoveTarget(Character character)
     {
@@ -102,28 +131,5 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public string navMeshDataKey = "NavMeshData";
-
-    public void SaveNavMeshData(NavMeshData navMeshData)
-    {
-        if (navMeshData != null)
-        {
-            BinaryFormatter bf = new BinaryFormatter();
-            MemoryStream ms = new MemoryStream();
-            bf.Serialize(ms, navMeshData);
-            PlayerPrefs.SetString(navMeshDataKey, Convert.ToBase64String(ms.GetBuffer()));
-        }
-    }
-
-    public void LoadNavMeshData(NavMeshData navMeshData)
-    {
-        if (PlayerPrefs.HasKey(navMeshDataKey))
-        {
-            string serializedData = PlayerPrefs.GetString(navMeshDataKey);
-            BinaryFormatter bf = new BinaryFormatter();
-            MemoryStream ms = new MemoryStream(Convert.FromBase64String(serializedData));
-            navMeshData = (NavMeshData)bf.Deserialize(ms);
-        }
-    }
 }
 

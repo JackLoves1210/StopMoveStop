@@ -40,6 +40,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6111820394437497270, guid: 76d9b7ad8cc953748ba180061b9d2daa, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.0923823
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111820394437497270, guid: 76d9b7ad8cc953748ba180061b9d2daa, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.0923823
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111820394437497270, guid: 76d9b7ad8cc953748ba180061b9d2daa, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.0923823
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111820394437497270, guid: 76d9b7ad8cc953748ba180061b9d2daa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -232,7 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolType: 3
-  moveSpeed: 5
   _character: {fileID: 0}
+  moveSpeed: 5
   hasUpdatedPosition: 0
   currentPostion: {x: 0, y: 0, z: 0}

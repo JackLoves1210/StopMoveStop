@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class WeaponCtl : GameUnit
 {
-    [SerializeField] protected float moveSpeed = 5f;
+    public static WeaponCtl Ins;
     [SerializeField] protected Character _character;
+    public float moveSpeed = 7f;
     public bool hasUpdatedPosition = false;
+    public void Awake()
+    {
+        Ins = this;
+    }
     public virtual void Oninit(Character character, Vector3 target)
     {
         this._character = character;
@@ -21,9 +26,10 @@ public class WeaponCtl : GameUnit
 
     private void OnTriggerEnter(Collider other)
     {
-        if (_character is Player && other.CompareTag(Constant.TAG_CHARACTER))
+        if (_character is Player && other.CompareTag(Constant.TAG_CHARACTER) && other.GetComponent<Character>() != _character)
         {
-            _character.SetSize(_character.size+0.05f);
+            _character.SetSize(_character.size+0.1f);
+            moveSpeed += 0.25f;
         }
         if (other.CompareTag(Constant.TAG_CHARACTER) && other.GetComponent<Character>() != _character)
         {
@@ -33,10 +39,9 @@ public class WeaponCtl : GameUnit
             hasUpdatedPosition = false;
             
         }
-        if (other.GetComponent<Character>() is Player && other.CompareTag(Constant.TAG_CHARACTER))
+        if (other.CompareTag(Constant.TAG_CHARACTER) && other.GetComponent<Character>() is Player && other.GetComponent<Character>() != _character)
         {
             AudioManager.Ins.Play(Constant.AUDIO_DEAD);
-            Debug.Log(Constant.AUDIO_DEAD);
         }
     }
 }

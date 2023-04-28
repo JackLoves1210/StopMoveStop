@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolType: 5
-  moveSpeed: 5
   _character: {fileID: 0}
+  moveSpeed: 5
   hasUpdatedPosition: 0
   currentPostion: {x: 0, y: 0, z: 0}

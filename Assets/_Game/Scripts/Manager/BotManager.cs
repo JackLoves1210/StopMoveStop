@@ -28,6 +28,7 @@ public class BotManager : MonoBehaviour
     }
     public void OnInit()
     {
+        totalBot = LevelManager.Ins.maxAlive;
         LevelManager.Ins.characters.Add(player);
         player.OnInit();
         for (int i = 0; i < totalBot; i++)
@@ -81,6 +82,8 @@ public class BotManager : MonoBehaviour
     {
         Bot bot = GetBotFormPool();
         bot.OnInit();
+        bot.SetSize(1);
+        bot.isCanMove = false;
         if (CheckRamdomPosition(bot))
         {
             bot.gameObject.SetActive(true);
@@ -88,10 +91,27 @@ public class BotManager : MonoBehaviour
         }
     }
 
+    public void SpawnBot(bool isCanMove)
+    {
+        Bot bot = GetBotFormPool();
+        bot.OnInit();
+        bot.isCanMove = isCanMove;
+
+        float randSize = Random.Range(Character.MAX_SIZE, Character.MIN_SIZE);
+        bot.ATT_RANGE *= randSize;
+        bot.SetSize(randSize);
+        if (CheckRamdomPosition(bot))
+        {
+            bot.gameObject.SetActive(true);
+            LevelManager.Ins.characters.Add(bot);
+        }
+        
+    }
+
     public IEnumerator CoroutineSpawnBot()
     {
         yield return new WaitForSeconds(2f);
-        SpawnBot();
+        SpawnBot(true);
     }
 
 

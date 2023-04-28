@@ -63,11 +63,7 @@ public class Player : Character
                         ChangeAnim(Constant.ANIM_IDLE);
                     }
 
-                    if (Input.GetKeyDown(KeyCode.Tab))
-                    {
-                        size += 0.1f;
-                        this.SetSize(size);
-                    }
+                   
 
                 }
                 break;
@@ -86,10 +82,6 @@ public class Player : Character
     public override void OnInit()
     {
         base.OnInit();
-        ChangeHat(ItemManager.Ins.hatTypes.Length-1);
-        ChangeAccessory(ItemManager.Ins.accessoryTypes.Length-1);
-        ChangePant(ItemManager.Ins.pantTypes.Length - 1);
-        ChangeSkin(0);
         ResetPosition();
         this.SetIndicator(this);
         SetName();
@@ -99,6 +91,7 @@ public class Player : Character
 
     public void SetName()
     {
+        botName.SetColor(botName.colors[1]);
         if (PlayerPrefs.HasKey(UserData.Key_NamePlayer))
         {
             botName.SetName(PlayerPrefs.GetString(UserData.Key_NamePlayer));
@@ -272,8 +265,7 @@ public class Player : Character
     {
          base.OnDeath();
          isCanMove = false;
-        
-        LevelManager.Ins.RemoveTarget(this);
+         LevelManager.Ins.RemoveTarget(this);
          UIManager.Ins.OpenUI<Loses>();
          UIManager.Ins.OpenUI<GamePlay>().CloseDirectly();
          this.ClearTarget(this);
@@ -282,9 +274,8 @@ public class Player : Character
     public override void SetSize(float size)
     {
         base.SetSize(size);
-        this.ATT_RANGE += 0.5f;
-        CameraFollow.Ins.SetRateOffset((this.size - MIN_SIZE) / (MAX_SIZE - MIN_SIZE));
-        _moveSpeed += 0.25f;
+        this.ATT_RANGE += 0.35f;
+        CameraFollow.Ins.SetRateOffset((this.size - MIN_SIZE)/ (2*MAX_SIZE - MIN_SIZE));
     }
     public void OnRevive()
     {
@@ -296,5 +287,7 @@ public class Player : Character
         IsDead = false;
         ATT_RANGE = 5f;
         _moveSpeed = 5f;
+        WeaponCtl.Ins.moveSpeed = 7f;
+        _weaponType._wreaponPrefab.transform.localScale =Vector3.one;
     }
 }

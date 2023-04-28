@@ -11,6 +11,7 @@ public class BotName : GameUnit
     public Transform target;
     Vector3 viewPoint;
     public Vector3 offset;
+    public Color[] colors;
     public void GetName()
     {
         rand = Random.Range(0, listNameBot.Count);
@@ -21,7 +22,12 @@ public class BotName : GameUnit
     {
         text.text = name;
     }
-    // Update is called once per frame
+    
+    public void SetColor(Color color)
+    {
+        text.color = color;
+    }
+
     private void LateUpdate()
     {
         viewPoint = Camera.main.WorldToScreenPoint(target.position + offset);

@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UIExample;
 using UnityEngine;
 
 public class UserData : Singleton<UserData>
 {
     public const string Key_Level = "Level";
+    public const string Key_MaxAlive = "MaxAlive";
     public const string Key_Coin = "Coin";
     public const string Key_SoundIsOn = "SoundIsOn";
     public const string Key_Vibrate = "VibrateIsOn";
@@ -29,16 +31,16 @@ public class UserData : Singleton<UserData>
     public int level = 0;
     public int coin = 0;
 
-    public bool soundIsOn = true;
+    public bool soundIsOn =true;
     public bool vibrate = true;
     public bool removeAds = false;
     public bool tutorialed = false;
 
-    public GameObject playerWeapon;
-    public GameObject playerHat;
-    public GameObject playerPant;
-    public GameObject playerAccessory;
-    public GameObject playerSkin;
+    public int idPlayerWeapon;
+    public int idPlayerHat;
+    public int idPlayerPant;
+    public int idPlayerAccessory;
+    public int idPlayerSkin;
 
     //Example
     // UserData.Ins.SetInt(UserData.Key_Level, ref UserData.Ins.level, 1);
@@ -92,7 +94,16 @@ public class UserData : Singleton<UserData>
         variable = value;
         PlayerPrefs.SetInt(key, value ? 1 : 0);
     }
-
+    public void SetBool(string key, bool value)
+    {
+        int intValue = value ? 1 : 0;
+        PlayerPrefs.SetInt(key, intValue);
+    }
+    public bool GetBool(string key)
+    {
+        int intValue = PlayerPrefs.GetInt(key);
+        return intValue == 1;
+    }
     public void SetFloatData(string key, ref float variable, float value)
     {
         variable = value;
@@ -159,15 +170,47 @@ public class UserData : Singleton<UserData>
 
     public void OnInitData()
     {
-
-
-        level = PlayerPrefs.GetInt(Key_Level, 0);
-        coin = PlayerPrefs.GetInt(Key_Coin, 0);
-
-        removeAds = PlayerPrefs.GetInt(Key_RemoveAds, 0) == 1;
-        tutorialed = PlayerPrefs.GetInt(Key_Tutorial, 0) == 1;
-        soundIsOn = PlayerPrefs.GetInt(Key_SoundIsOn, 0) == 1;
+        soundIsOn = GetBool(Key_SoundIsOn);
         vibrate = PlayerPrefs.GetInt(Key_Vibrate, 0) == 1;
+        idPlayerSkin = PlayerPrefs.GetInt(Keys_Skin_Data, 0);
+        if (idPlayerSkin == 0)
+        {
+            LevelManager.Ins.player.ChangeSkin(idPlayerSkin);
+        }
+        idPlayerWeapon = PlayerPrefs.GetInt(Keys_Weapon_Data, 0);
+        LevelManager.Ins.player.ChangeWeapon(idPlayerWeapon);
+        idPlayerHat = PlayerPrefs.GetInt(Keys_Hat_Data, ItemManager.Ins.hatTypes.Length-1);
+        LevelManager.Ins.player.ChangeHat(idPlayerHat);
+        idPlayerPant = PlayerPrefs.GetInt(Keys_Pant_Data, ItemManager.Ins.pantTypes.Length - 1);
+        LevelManager.Ins.player.ChangePant(idPlayerPant);
+        idPlayerAccessory = PlayerPrefs.GetInt(Keys_Accessory_Data, ItemManager.Ins.accessoryTypes.Length - 1);
+        LevelManager.Ins.player.ChangeAccessory(idPlayerAccessory);
+        
+        if (idPlayerSkin != 0)
+        {
+            Debug.Log("changeskin" + idPlayerSkin);
+            LevelManager.Ins.player.ChangeSkin(idPlayerSkin);
+        }
+        
+    }
+    public class ListWrapper<T>
+    {
+        public List<T> list = new List<T>();
     }
 
+    public  List<T> GetList<T>(string key)
+    {
+        return Get<ListWrapper<T>>(key, new ListWrapper<T>()).list;
+    }
+
+    public  List<T> GetList<T>(string key, List<T> defaultValue)
+    {
+        return Get<ListWrapper<T>>(key, new ListWrapper<T> { list = defaultValue }).list;
+    }
+
+    public  void SetList<T>(string key, List<T> value)
+    {
+        Set(key, new ListWrapper<T> { list = value });
+    }
+   
 }

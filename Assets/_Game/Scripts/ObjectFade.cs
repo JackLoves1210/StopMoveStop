@@ -13,6 +13,7 @@ public class ObjectFade : MonoBehaviour
     private void Start()
     {
         material = GetComponent<Renderer>().material;
+        player = FindObjectOfType<Player>().transform;
         originalColor = material.color;
         originalColorFade = material.color;
         originalColorFade.a = 0.4f;
