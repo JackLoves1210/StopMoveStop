@@ -41,4 +41,17 @@ public class AudioManager : Singleton<AudioManager>
             AudioListener.volume = 1;
         }
     }
+
+    public bool isCanVibrate = true;
+    public void MuteHandleVibrater(bool mute)
+    {
+        if (mute)
+        {
+            isCanVibrate = false;
+        }
+        else
+        {
+            isCanVibrate = true;
+        }
+    }
 }

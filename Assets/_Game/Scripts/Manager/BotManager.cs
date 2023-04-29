@@ -18,6 +18,11 @@ public class BotManager : MonoBehaviour
     public float spawnRangeZ;
     public float minDistance;
 
+    public float[] RangeX;
+    public float[] RangeZ;
+    public float[] minDistances;
+
+
     private void Awake()
     {
         _instance = this;
@@ -117,14 +122,15 @@ public class BotManager : MonoBehaviour
 
     public bool CheckRamdomPosition(Character character)
     {
+        int currentLevel = LevelManager.Ins.currentLevel-1; 
         bool validPosition = false;
         while (!validPosition)
         {
-            character.transform.position = new Vector3(Random.Range(-spawnRangeX, spawnRangeX), 0, Random.Range(-spawnRangeZ, spawnRangeZ));
+            character.transform.position = new Vector3(Random.Range(-RangeX[currentLevel], RangeX[currentLevel]), 0, Random.Range(-RangeZ[currentLevel], RangeZ[currentLevel]));
             validPosition = true;
             foreach (Character otherCharacter in LevelManager.Ins.characters)
             {
-                if (Vector3.Distance(character.transform.position, otherCharacter.transform.position) < minDistance)
+                if (Vector3.Distance(character.transform.position, otherCharacter.transform.position) < minDistances[currentLevel])
                 {
                     validPosition = false;
                     break;

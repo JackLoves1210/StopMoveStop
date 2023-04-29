@@ -287,7 +287,6 @@ public class Player : Character
         IsDead = false;
         ATT_RANGE = 5f;
         _moveSpeed = 5f;
-        WeaponCtl.Ins.moveSpeed = 7f;
-        _weaponType._wreaponPrefab.transform.localScale =Vector3.one;
+       // _weaponType._wreaponPrefab.transform.localScale =Vector3.one;
     }
 }

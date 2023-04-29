@@ -14,7 +14,10 @@ namespace UIExample
         [SerializeField] private TMP_InputField inputField;
         [SerializeField] private GameObject buttonMuteOn;
         [SerializeField] private GameObject buttonMuteOff;
+        [SerializeField] private GameObject buttonVibrateOn;
+        [SerializeField] private GameObject buttonVibrateOff;
         public bool muteSound;
+        public bool muteVibrate;
         public void Awake()
         {
             Ins = this;
@@ -35,14 +38,11 @@ namespace UIExample
                 LevelManager.Ins.stateGame = LevelManager.StateGame.MainMenu;
             }
             muteSound = UserData.Ins.GetBool(UserData.Key_SoundIsOn);
-            if (muteSound)
-            {
-                MuteOn();
-            }
-            else
-            {
-                MuteOff();
-            }
+            if (muteSound) MuteOn();
+            else MuteOff();
+            muteVibrate = UserData.Ins.GetBool(UserData.Key_Vibrate);
+            if (muteVibrate) MuteVibrateOn();
+            else MuteVibrateOff();
         }
         public void PlayButton()
         {
@@ -87,7 +87,7 @@ namespace UIExample
             buttonMuteOn.SetActive(false);
             AudioManager.Ins.MuteHandler(true);
             UserData.Ins.SetBool(UserData.Key_SoundIsOn, true);
-            UserData.Ins.soundIsOn = UserData.Ins.GetBool(UserData.Key_SoundIsOn);
+           // UserData.Ins.soundIsOn = UserData.Ins.GetBool(UserData.Key_SoundIsOn);
            // Debug.Log(UserData.Ins.soundIsOn);
         }
 
@@ -97,8 +97,27 @@ namespace UIExample
             buttonMuteOn.SetActive(true);
             AudioManager.Ins.MuteHandler(false);
             UserData.Ins.SetBool(UserData.Key_SoundIsOn, false);
-            UserData.Ins.soundIsOn = UserData.Ins.GetBool(UserData.Key_SoundIsOn);
+           // UserData.Ins.soundIsOn = UserData.Ins.GetBool(UserData.Key_SoundIsOn);
            // Debug.Log(UserData.Ins.soundIsOn);
+        }
+        public void MuteVibrateOn()
+        {
+            buttonVibrateOff.SetActive(true);
+            buttonVibrateOn.SetActive(false);
+            AudioManager.Ins.MuteHandleVibrater(true);
+            UserData.Ins.SetBool(UserData.Key_Vibrate, true);
+            //UserData.Ins.soundIsOn = UserData.Ins.GetBool(UserData.Key_SoundIsOn);
+            // Debug.Log(UserData.Ins.soundIsOn);
+        }
+
+        public void MuteVibrateOff()
+        {
+            buttonVibrateOff.SetActive(false);
+            buttonVibrateOn.SetActive(true);
+            AudioManager.Ins.MuteHandleVibrater(false);
+            UserData.Ins.SetBool(UserData.Key_Vibrate, false);
+           // UserData.Ins.soundIsOn = UserData.Ins.GetBool(UserData.Key_SoundIsOn);
+            // Debug.Log(UserData.Ins.soundIsOn);
         }
     }
 }

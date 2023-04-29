@@ -30,6 +30,10 @@ public class WeaponCtl : GameUnit
         {
             _character.SetSize(_character.size+0.1f);
             moveSpeed += 0.25f;
+            if (AudioManager.Ins.isCanVibrate)
+            {
+                Handheld.Vibrate();
+            }
         }
         if (other.CompareTag(Constant.TAG_CHARACTER) && other.GetComponent<Character>() != _character)
         {

@@ -40,29 +40,12 @@ public class LevelManager : Singleton<LevelManager>
             map.gameObject.SetActive(false);
             maps.Add(map);
         }
-        maps[currentLevel - 1].gameObject.SetActive(true);
+       // maps[currentLevel -1].gameObject.SetActive(true);
+        maps[3].gameObject.SetActive(true);
         //currentMap = SimplePool.Spawn<Map>(maps[currentLevel - 1]);
         maxAlive = PlayerPrefs.GetInt(UserData.Key_MaxAlive, 10);
+        Debug.Log(maxAlive);
         alive = maxAlive;
-    }
-
-    public void Update()
-    {
-      
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            Debug.Log("s");
-            SimplePool.Despawn(maps[currentLevel - 1]);
-            
-
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Debug.Log("s");
-            currentLevel++;
-            maps[currentLevel - 1].gameObject.SetActive(true);
-
-        }
     }
     public void OnReset()
     {
@@ -96,15 +79,14 @@ public class LevelManager : Singleton<LevelManager>
     {
         characters.Clear();
         OnReset();
-        maxAlive = PlayerPrefs.GetInt(UserData.Key_MaxAlive);
         maxAlive += 10;
         PlayerPrefs.SetInt(UserData.Key_MaxAlive, maxAlive);
+        Debug.Log(PlayerPrefs.GetInt(UserData.Key_MaxAlive));
         alive = maxAlive;
         NextLevel();
         //OnLoadLevel(levelIndex);
         UIManager.Ins.OpenUI<Win>().CloseDirectly();
         BotManager._instance.SpawnBot(alive, BotManager._instance.realBot);
-        
         UIManager.Ins.OpenUI<MainMenu>();
         PlayerPrefs.Save();
     }

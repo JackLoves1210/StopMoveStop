@@ -170,13 +170,15 @@ public class UserData : Singleton<UserData>
 
     public void OnInitData()
     {
+        if (!PlayerPrefs.HasKey(Key_SoundIsOn)) SetBool(Key_SoundIsOn, true);
         soundIsOn = GetBool(Key_SoundIsOn);
-        vibrate = PlayerPrefs.GetInt(Key_Vibrate, 0) == 1;
+
+        if (!PlayerPrefs.HasKey(Key_Vibrate)) SetBool(Key_Vibrate, true);
+        vibrate = GetBool(Key_Vibrate);
+
         idPlayerSkin = PlayerPrefs.GetInt(Keys_Skin_Data, 0);
-        if (idPlayerSkin == 0)
-        {
-            LevelManager.Ins.player.ChangeSkin(idPlayerSkin);
-        }
+        if (idPlayerSkin == 0) LevelManager.Ins.player.ChangeSkin(idPlayerSkin);
+
         idPlayerWeapon = PlayerPrefs.GetInt(Keys_Weapon_Data, 0);
         LevelManager.Ins.player.ChangeWeapon(idPlayerWeapon);
         idPlayerHat = PlayerPrefs.GetInt(Keys_Hat_Data, ItemManager.Ins.hatTypes.Length-1);
@@ -185,13 +187,10 @@ public class UserData : Singleton<UserData>
         LevelManager.Ins.player.ChangePant(idPlayerPant);
         idPlayerAccessory = PlayerPrefs.GetInt(Keys_Accessory_Data, ItemManager.Ins.accessoryTypes.Length - 1);
         LevelManager.Ins.player.ChangeAccessory(idPlayerAccessory);
-        
-        if (idPlayerSkin != 0)
-        {
-            Debug.Log("changeskin" + idPlayerSkin);
-            LevelManager.Ins.player.ChangeSkin(idPlayerSkin);
-        }
-        
+
+        if (idPlayerSkin != 0) LevelManager.Ins.player.ChangeSkin(idPlayerSkin);
+
+
     }
     public class ListWrapper<T>
     {

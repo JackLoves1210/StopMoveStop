@@ -15,14 +15,11 @@ namespace UIExample
         { 
             base.Open();
             LevelManager.Ins.player.isCanMove = false;
-            if (MainMenu.Ins.muteSound)
-            {
-                MuteOnSound();
-            }
-            else
-            {
-                MuteOffSound();
-            }
+            if (MainMenu.Ins.muteSound) MuteOnSound();
+            else MuteOffSound();
+
+            if (MainMenu.Ins.muteVibrate) MuteOnVibration();
+            else MuteOffVibration();
         }
         public void HomeButton()
         {
@@ -55,14 +52,17 @@ namespace UIExample
         }
         public void MuteOnVibration()
         {
+            MainMenu.Ins.MuteVibrateOn();
             btnTurnOffVibration.SetActive(false);
             btnTurnOnVibration.SetActive(true);
         }
 
         public void MuteOffVibration()
         {
-            btnTurnOnVibration.SetActive(false);
+            MainMenu.Ins.MuteVibrateOff();
             btnTurnOffVibration.SetActive(true);
+            btnTurnOnVibration.SetActive(false);
+            
         }
     }
 }
