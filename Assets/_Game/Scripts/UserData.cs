@@ -11,8 +11,8 @@ public class UserData : Singleton<UserData>
     public const string Key_Coin = "Coin";
     public const string Key_SoundIsOn = "SoundIsOn";
     public const string Key_Vibrate = "VibrateIsOn";
-    public const string Key_RemoveAds = "RemoveAds";
-    public const string Key_Tutorial = "Tutorial";
+    //public const string Key_RemoveAds = "RemoveAds";
+   // public const string Key_Tutorial = "Tutorial";
     public const string Key_NamePlayer = "Name";
 
     public const string Key_Player_Weapon = "PlayerWeapon";
@@ -33,7 +33,7 @@ public class UserData : Singleton<UserData>
 
     public bool soundIsOn =true;
     public bool vibrate = true;
-    public bool removeAds = false;
+   // public bool removeAds = false;
     public bool tutorialed = false;
 
     public int idPlayerWeapon;
@@ -42,58 +42,7 @@ public class UserData : Singleton<UserData>
     public int idPlayerAccessory;
     public int idPlayerSkin;
 
-    //Example
-    // UserData.Ins.SetInt(UserData.Key_Level, ref UserData.Ins.level, 1);
-
-    //data for list
-    /// <summary>
-    ///  0 = lock , 1 = unlock , 2 = selected
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="ID"></param>
-    /// <param name="state"></param>
-    public void SetDataState(string key, int ID, int state)
-    {
-        PlayerPrefs.SetInt(key + ID, state);
-    }
-    /// <summary>
-    ///  0 = lock , 1 = unlock , 2 = selected
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="ID"></param>
-    /// <param name="state"></param>
-    public int GetDataState(string key, int ID, int state = 0)
-    {
-        return PlayerPrefs.GetInt(key + ID, state);
-    }
-
-    public void SetDataState(string key, int state)
-    {
-        PlayerPrefs.SetInt(key, state);
-    }
-
-    public int GetDataState(string key, int state = 0)
-    {
-        return PlayerPrefs.GetInt(key, state);
-    }
-
-    /// <summary>
-    /// Key_Name
-    /// if(bool) true == 1
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    public void SetIntData(string key, ref int variable, int value)
-    {
-        variable = value;
-        PlayerPrefs.SetInt(key, value);
-    }
-
-    public void SetBoolData(string key, ref bool variable, bool value)
-    {
-        variable = value;
-        PlayerPrefs.SetInt(key, value ? 1 : 0);
-    }
+   
     public void SetBool(string key, bool value)
     {
         int intValue = value ? 1 : 0;
@@ -103,59 +52,6 @@ public class UserData : Singleton<UserData>
     {
         int intValue = PlayerPrefs.GetInt(key);
         return intValue == 1;
-    }
-    public void SetFloatData(string key, ref float variable, float value)
-    {
-        variable = value;
-        PlayerPrefs.GetFloat(key, value);
-    }
-
-    public void SetStringData(string key, ref string variable, string value)
-    {
-        variable = value;
-        PlayerPrefs.SetString(key, value);
-    }
-
-    public void SetEnumData<T>(string key, ref T variable, T value)
-    {
-        variable = value;
-        PlayerPrefs.SetInt(key, Convert.ToInt32(value));
-    }
-
-    public void SetEnumData<T>(string key, T value)
-    {
-        PlayerPrefs.SetInt(key, Convert.ToInt32(value));
-    }
-
-
-    public T GetEnumData<T>(string key, T defaultValue) where T : Enum
-    {
-        return (T)Enum.ToObject(typeof(T), PlayerPrefs.GetInt(key, Convert.ToInt32(defaultValue)));
-    }
-
-    public T GetEnumDatas<T>(string key, T defaultValue)
-    {
-        return (T)Enum.ToObject(typeof(T), PlayerPrefs.GetInt(key, Convert.ToInt32(defaultValue)));
-    }
-
-    //public GameObject GetData(string key, GameObject defaultValue)
-    //{
-    //    return (GameObject)Enum.ToObject(typeof(GameObject), PlayerPrefs.GetInt(key, Convert.ToInt32(defaultValue)));
-    //}
-
-    public  T GetObject<T>(string key)
-    {
-        return Get<T>(key, default(T));
-    }
-
-    public  T GetObject<T>(string key, T defaultValue)
-    {
-        return Get<T>(key, defaultValue);
-    }
-
-    public  void SetObject<T>(string key, T value)
-    {
-        Set(key, value);
     }
 
     static T Get<T>(string key, T defaultValue)
@@ -167,7 +63,25 @@ public class UserData : Singleton<UserData>
     {
         PlayerPrefs.SetString(key, JsonUtility.ToJson(value));
     }
+    public class ListWrapper<T>
+    {
+        public List<T> list = new List<T>();
+    }
 
+    public List<T> GetList<T>(string key)
+    {
+        return Get<ListWrapper<T>>(key, new ListWrapper<T>()).list;
+    }
+
+    public List<T> GetList<T>(string key, List<T> defaultValue)
+    {
+        return Get<ListWrapper<T>>(key, new ListWrapper<T> { list = defaultValue }).list;
+    }
+
+    public void SetList<T>(string key, List<T> value)
+    {
+        Set(key, new ListWrapper<T> { list = value });
+    }
     public void OnInitData()
     {
         if (!PlayerPrefs.HasKey(Key_SoundIsOn)) SetBool(Key_SoundIsOn, true);
@@ -192,24 +106,6 @@ public class UserData : Singleton<UserData>
 
 
     }
-    public class ListWrapper<T>
-    {
-        public List<T> list = new List<T>();
-    }
-
-    public  List<T> GetList<T>(string key)
-    {
-        return Get<ListWrapper<T>>(key, new ListWrapper<T>()).list;
-    }
-
-    public  List<T> GetList<T>(string key, List<T> defaultValue)
-    {
-        return Get<ListWrapper<T>>(key, new ListWrapper<T> { list = defaultValue }).list;
-    }
-
-    public  void SetList<T>(string key, List<T> value)
-    {
-        Set(key, new ListWrapper<T> { list = value });
-    }
+    
    
 }

@@ -8,14 +8,6 @@ public class ButtonState : MonoBehaviour
     public State state;
     public List<State> shopWeaponStatus;
 
-    public void Start()
-    {
-        //shopWeaponStatus = new State[ItemManager.Ins.weaponTypes.Length];
-        //PlayerPrefs.DeleteKey("Shop_Weapon_Status");
-
-        
-    }
-
     [SerializeField] GameObject[] buttonObjects;
 
     public void SetState(State state)

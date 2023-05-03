@@ -42,7 +42,7 @@ public class FPS : MonoBehaviour
 
     private void OnGUI()
     {
-        GUI.Label(new Rect(5, 5, 100, 25), fps.ToString("F2") + " FPS", textStyle);
+        GUI.Label(new Rect(5, 1850, 100, 25), fps.ToString("F2") + " FPS", textStyle);
     }
 }
 

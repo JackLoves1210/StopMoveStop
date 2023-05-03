@@ -14,7 +14,6 @@ namespace UIExample
             UserData.Ins.coin += 100;
             PlayerPrefs.SetInt("Coin", UserData.Ins.coin);
             PlayerPrefs.Save();
-            // LevelManager.Ins.canvasIndicator.gameObject.SetActive(false);
             text.text = "#" + LevelManager.Ins.alive.ToString();
         }
 

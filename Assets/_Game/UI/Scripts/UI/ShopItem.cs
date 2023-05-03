@@ -28,21 +28,4 @@ public class ShopItem : MonoBehaviour
         
     }
 
-    //public Transform FindDeepChild(Transform parent, string name)
-    //{
-    //    Transform result = parent.Find(name);
-
-    //    if (result != null)
-    //        return result;
-
-    //    foreach (Transform child in parent)
-    //    {
-    //        result = FindDeepChild(child,name);
-    //        if (result != null)
-    //            return result;
-    //    }
-
-    //    return null;
-    //}
-
 }

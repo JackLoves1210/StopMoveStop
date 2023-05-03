@@ -8,7 +8,7 @@ public class Player : Character
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _rotateSpeed;
-
+    [SerializeField] private Transform tailTranform;
     public GameObject modelWing;
     public Transform wingTranform;
 
@@ -63,7 +63,10 @@ public class Player : Character
                         ChangeAnim(Constant.ANIM_IDLE);
                     }
 
-                   
+                    if (Input.GetKeyDown(KeyCode.Tab))
+                    {
+                        SetSize(this.size + 0.1f);
+                    }
 
                 }
                 break;
@@ -158,20 +161,26 @@ public class Player : Character
         }
         hatType = Instantiate(ItemManager.Ins.skinTypes[index].modelHat);
         hatType.transform.SetParent(hatTranform, false);
-
         // change pant
         modelPant.transform.GetComponent<Renderer>().material = ItemManager.Ins.skinTypes[index].materialPant;
-
         // change skin
         modelSkin.GetComponent<Renderer>().material = ItemManager.Ins.skinTypes[index].materialSelf;
-
-        // change accessory
-        if (hatType != null)
+        if (index != 1)
         {
-            Destroy(accessoryType);
+            if (accessoryType != null)
+            {
+                Destroy(accessoryType);
+            }
+            accessoryType = Instantiate(ItemManager.Ins.skinTypes[index].modelAcessory);
+            accessoryType.transform.SetParent(accessoryTranform, false);
         }
-        accessoryType = Instantiate(ItemManager.Ins.skinTypes[index].modelAcessory);
-        accessoryType.transform.SetParent(accessoryTranform, false);
+        else
+        {
+            accessoryType = Instantiate(ItemManager.Ins.skinTypes[index].modelAcessory);
+            accessoryType.transform.SetParent(tailTranform, false);
+        }
+        // change accessory
+        
         // change wing
         if (modelWing != null)
         {
@@ -289,4 +298,5 @@ public class Player : Character
         _moveSpeed = 5f;
        // _weaponType._wreaponPrefab.transform.localScale =Vector3.one;
     }
+
 }

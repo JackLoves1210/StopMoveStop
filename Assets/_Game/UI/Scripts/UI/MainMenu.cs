@@ -87,8 +87,6 @@ namespace UIExample
             buttonMuteOn.SetActive(false);
             AudioManager.Ins.MuteHandler(true);
             UserData.Ins.SetBool(UserData.Key_SoundIsOn, true);
-           // UserData.Ins.soundIsOn = UserData.Ins.GetBool(UserData.Key_SoundIsOn);
-           // Debug.Log(UserData.Ins.soundIsOn);
         }
 
         public void MuteOff()
@@ -97,8 +95,6 @@ namespace UIExample
             buttonMuteOn.SetActive(true);
             AudioManager.Ins.MuteHandler(false);
             UserData.Ins.SetBool(UserData.Key_SoundIsOn, false);
-           // UserData.Ins.soundIsOn = UserData.Ins.GetBool(UserData.Key_SoundIsOn);
-           // Debug.Log(UserData.Ins.soundIsOn);
         }
         public void MuteVibrateOn()
         {
@@ -106,8 +102,6 @@ namespace UIExample
             buttonVibrateOn.SetActive(false);
             AudioManager.Ins.MuteHandleVibrater(true);
             UserData.Ins.SetBool(UserData.Key_Vibrate, true);
-            //UserData.Ins.soundIsOn = UserData.Ins.GetBool(UserData.Key_SoundIsOn);
-            // Debug.Log(UserData.Ins.soundIsOn);
         }
 
         public void MuteVibrateOff()
@@ -116,8 +110,6 @@ namespace UIExample
             buttonVibrateOn.SetActive(true);
             AudioManager.Ins.MuteHandleVibrater(false);
             UserData.Ins.SetBool(UserData.Key_Vibrate, false);
-           // UserData.Ins.soundIsOn = UserData.Ins.GetBool(UserData.Key_SoundIsOn);
-            // Debug.Log(UserData.Ins.soundIsOn);
         }
     }
 }

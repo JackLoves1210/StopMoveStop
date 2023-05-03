@@ -15,6 +15,7 @@ public class Constant
     public const string TAG_BOT = "Bot";
     public const string TAG_PLAYER = "Player";
     public const string TAG_BLOCK = "Block";
+    public const string TAG_WALL = "Wall";
 
     public const string NAME_CANVAS_INDICATOR = "Indicator";
 
@@ -24,6 +25,7 @@ public class Constant
     public const string AUDIO_DEAD_1 = "Dead_1";
     public const string AUDIO_DEAD = "Dead";
     public const string AUDIO_VICTORY = "Victory";
+    public const string AUDIO_SIZEUP = "Sizeup";
     public const string AUDIO_LOSE = "Lose";
     public const string AUDIO_DIE = "Die";
 }

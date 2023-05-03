@@ -18,17 +18,16 @@ public class LevelManager : Singleton<LevelManager>
     public int alive ;
     public int maxAlive;
     public int currentLevel;
-    //[SerializeField] public NavMeshData []navMeshDatas;
-    //[SerializeField] public NavMeshData currentNavMesh;
+    private int realBotSpawn;
     [SerializeField] private Map[] mapFrefab;
-   // [SerializeField] private Map currentMap;
     [SerializeField] private List<Map> maps;
     private void Awake()
     {
+        realBotSpawn = BotManager._instance.realBot;
         canvasIndicator = GameObject.FindGameObjectWithTag(Constant.NAME_CANVAS_INDICATOR).transform;
         UserData.Ins.OnInitData();
-        PlayerPrefs.DeleteKey(UserData.Key_Level);
-        PlayerPrefs.DeleteKey(UserData.Key_MaxAlive);
+       // PlayerPrefs.DeleteKey(UserData.Key_Level);
+       // PlayerPrefs.DeleteKey(UserData.Key_MaxAlive);
         if (PlayerPrefs.HasKey(UserData.Key_Level))
         {
             currentLevel = PlayerPrefs.GetInt(UserData.Key_Level);
@@ -40,11 +39,8 @@ public class LevelManager : Singleton<LevelManager>
             map.gameObject.SetActive(false);
             maps.Add(map);
         }
-       // maps[currentLevel -1].gameObject.SetActive(true);
-        maps[3].gameObject.SetActive(true);
-        //currentMap = SimplePool.Spawn<Map>(maps[currentLevel - 1]);
-        maxAlive = PlayerPrefs.GetInt(UserData.Key_MaxAlive, 10);
-        Debug.Log(maxAlive);
+        maps[currentLevel -1].gameObject.SetActive(true);
+        maxAlive = PlayerPrefs.GetInt(UserData.Key_MaxAlive, 50);
         alive = maxAlive;
     }
     public void OnReset()
@@ -73,6 +69,7 @@ public class LevelManager : Singleton<LevelManager>
         UIManager.Ins.OpenUI<Loses>().CloseDirectly();
         BotManager._instance.SpawnBot(alive, BotManager._instance.realBot);
         UIManager.Ins.OpenUI<MainMenu>();
+        PlayerPrefs.Save();
     }
 
     public void NextLevelGame()
@@ -86,7 +83,8 @@ public class LevelManager : Singleton<LevelManager>
         NextLevel();
         //OnLoadLevel(levelIndex);
         UIManager.Ins.OpenUI<Win>().CloseDirectly();
-        BotManager._instance.SpawnBot(alive, BotManager._instance.realBot);
+        realBotSpawn += 1;
+        BotManager._instance.SpawnBot(alive, realBotSpawn);
         UIManager.Ins.OpenUI<MainMenu>();
         PlayerPrefs.Save();
     }
@@ -96,7 +94,14 @@ public class LevelManager : Singleton<LevelManager>
 
         SimplePool.Despawn(maps[currentLevel-1]);
         currentLevel++;
-        maps[currentLevel - 1].gameObject.SetActive(true);
+        if (currentLevel>5)
+        {
+            maps[4].gameObject.SetActive(true);
+        }
+        else
+        {
+            maps[currentLevel - 1].gameObject.SetActive(true);
+        }
         PlayerPrefs.SetInt(UserData.Key_Level, currentLevel);
         //NavMesh.RemoveAllNavMeshData();
         //NavMesh.AddNavMeshData(currentNavMesh);

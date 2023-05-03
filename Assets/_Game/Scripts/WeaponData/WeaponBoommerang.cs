@@ -21,7 +21,6 @@ public class WeaponBoommerang : WeaponCtl
         state = State.Forward;
     }
 
-
     public void Boomearang()
     {
         switch (state)
